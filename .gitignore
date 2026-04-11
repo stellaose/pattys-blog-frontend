@@ -12,6 +12,8 @@
 
 # testing
 /coverage
+yarn.lock
+.env
 
 # next.js
 /.next/
