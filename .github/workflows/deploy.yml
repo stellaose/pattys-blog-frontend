@@ -57,8 +57,8 @@ jobs:
   # ─── Job 2: Deploy to GCP ───────────────────────────────────
   deploy:
     runs-on: ubuntu-latest
-    needs: build # only runs if build job succeeds
-    if: github.ref == 'refs/heads/main' # only deploys on main branch
+    needs: build
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Deploy to GCP server
@@ -82,7 +82,7 @@ jobs:
             docker run -d \
               --name my-next-app \
               --restart always \
-              -p 3015:3015 \
+              -p 3015:3000 \
               ghcr.io/${{ github.repository }}:latest
 
             # Remove old unused images
