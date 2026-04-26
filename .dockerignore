@@ -1,6 +1,8 @@
+# .dockerignore
 node_modules
-dist
+.next
+.git
 .env
 .env.*
-.git
 *.md
+.DS_Store
