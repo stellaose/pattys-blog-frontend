@@ -32,7 +32,7 @@ export const Header = () => {
               </span>
             </Link>
             <Link href="/login">
-              <span className="border border-lemon bg-lemon text-white-100 py-[13px] px-6 rounded-lg cursor-pointer hover:scale-105 transition transform duration-300 hover:text-lemon hover:bg-transparent font-semibold">
+              <span className="border border-lemon bg-lemon text-black py-[13px] px-6 rounded-lg cursor-pointer hover:scale-105 transition transform duration-300 hover:text-lemon hover:bg-transparent font-semibold">
                 Log in
               </span>
             </Link>

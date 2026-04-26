@@ -5,8 +5,6 @@ import { Logo, SignupImg, NigeriaFlag } from "#assets/images";
 import { Form, Input } from "antd";
 import { CustomInput } from "#components/general";
 import Image from "next/image";
-import { LuEyeClosed } from "react-icons/lu";
-import { CustomSelect } from "#components/elements";
 
 const Signup = () => {
   return (
@@ -137,48 +135,48 @@ const Signup = () => {
               </div>
               <div className="flex justify-between items-center">
                 <div className="flex flex-col gap-y-3.5 w-12/25">
-                  <label htmlFor="password">Password</label>
-                  <div className="bg-white rounded-xl pr-4 focus-within:outline focus-within:outline-orange flex justify-between items-center">
-                    <input
+                  
+                    <CustomInput
                       name="password"
                       type="password"
                       placeholder="Password"
-                      className=" w-full"
+                      label="Password"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Password is required",
+                        },
+                      ]}
+                      onChange={(e) => console.log(e)}
                     />
-                    <LuEyeClosed
-                      size={32}
-                      color="#969191"
-                      className="cursor-pointer"
-                    />
-                  </div>
                 </div>
                 <div className="flex flex-col gap-y-3.5 w-12/25">
-                  <label htmlFor="confirm_password">Confirm password</label>
-                  <div className="bg-white rounded-xl pr-4 focus-within:outline focus-within:outline-orange flex justify-between items-center">
-                    <input
-                      name="confirm_password"
+                  
+                    <CustomInput
+                      name="password"
                       type="password"
-                      placeholder="Confirm Password"
-                      className=" w-full"
+                      placeholder="Password"
+                      label="Confirm Password"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Password is required",
+                        },
+                      ]}
+                      onChange={(e) => console.log(e)}
                     />
-                    <LuEyeClosed
-                      size={32}
-                      color="#969191"
-                      className="cursor-pointer"
-                    />
-                  </div>
                 </div>
               </div>
 
               <div className="flex justify-between items-center">
                 <div className="flex flex-col gap-y-3.5 w-12/25">
                   <label htmlFor="gender">Gender </label>
-                  <CustomSelect
+                  {/* <CustomSelect
                     options={[
                       { label: "Male", value: "male" },
                       { label: "Female", value: "female" },
                     ]}
-                  />
+                  /> */}
                 </div>
               </div>
             </Form>
