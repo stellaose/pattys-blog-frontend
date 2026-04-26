@@ -13,7 +13,7 @@ const Signup = () => {
         <>
           <div className="w-[90%] !mx-auto">
             <div className="flex flex-col justify-center items-center pt-[56px] gap-y-5">
-              <Image src={Logo} alt="" className="h-[50px] w-auto" />
+              <Image src={Logo} alt="" className="h-[50px] w-auto" loading="eager"/>
               <p>Welcome to Pattys. This is going to be a fun ride! 😉</p>
             </div>
 
@@ -98,6 +98,7 @@ const Signup = () => {
                         src={NigeriaFlag}
                         alt=""
                         className="h-[48px] w-auto"
+                        loading="eager"
                       />{" "}
                       <Input
                         placeholder="Phone Number"
