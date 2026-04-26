@@ -3,17 +3,29 @@ import { AuthLayout } from "#components/layouts";
 import React from "react";
 import { Logo, SignupImg, NigeriaFlag } from "#assets/images";
 import { Form, Input } from "antd";
-import { CustomInput } from "#components/general";
+import { CustomInput, CustomTextArea, Select } from "#components/general";
 import Image from "next/image";
+import { SubmitButton } from "#/components/elements";
+import { useRouter } from "next/navigation";
 
 const Signup = () => {
+  const router = useRouter();
+
+  const [form] = Form.useForm();
+  const values = Form.useWatch([], form);
+
   return (
     <>
       <AuthLayout image={SignupImg}>
         <>
-          <div className="w-[90%] !mx-auto">
+          <div className="2lg:w-9/10 xxl:w-4/5 md:w-3/4 sm:w-4/5 w-9/10 !mx-auto pb-14">
             <div className="flex flex-col justify-center items-center pt-[56px] gap-y-5">
-              <Image src={Logo} alt="" className="h-[50px] w-auto" loading="eager"/>
+              <Image
+                src={Logo}
+                alt=""
+                className="h-[50px] w-auto"
+                loading="eager"
+              />
               <p>Welcome to Pattys. This is going to be a fun ride! 😉</p>
             </div>
 
@@ -22,9 +34,10 @@ const Signup = () => {
               requiredMark={false}
               layout="vertical"
               autoComplete="off"
+              form={form}
             >
-              <div className="flex justify-between items-start">
-                <div className="flex flex-col gap-y-3.5 w-12/25">
+              <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
+                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
                   <CustomInput
                     name="first_name"
                     label={
@@ -43,7 +56,7 @@ const Signup = () => {
                     onChange={(e) => console.log(e)}
                   />
                 </div>
-                <div className="flex flex-col w-12/25 gap-y-3.5">
+                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
                   <CustomInput
                     name="last_name"
                     label={
@@ -62,8 +75,9 @@ const Signup = () => {
                   />
                 </div>
               </div>
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-y-3.5 w-12/25">
+
+             <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
+                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
                   <CustomInput
                     name="user_name"
                     label={
@@ -81,7 +95,7 @@ const Signup = () => {
                     onChange={(e) => console.log(e)}
                   />
                 </div>
-                <div className="flex flex-col w-12/25 gap-y-3.5">
+                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
                   <Form.Item
                     name="phone_number"
                     label={
@@ -102,6 +116,7 @@ const Signup = () => {
                       />{" "}
                       <Input
                         placeholder="Phone Number"
+                        required
                         type="tel"
                         className="!h-[60px] text-base"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -113,8 +128,8 @@ const Signup = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-y-3.5 w-full">
+              <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
+                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
                   <CustomInput
                     name="email"
                     label={
@@ -133,52 +148,104 @@ const Signup = () => {
                     onChange={(e) => console.log(e)}
                   />
                 </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-y-3.5 w-12/25">
-                  
-                    <CustomInput
-                      name="password"
-                      type="password"
-                      placeholder="Password"
-                      label="Password"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Password is required",
-                        },
-                      ]}
-                      onChange={(e) => console.log(e)}
-                    />
-                </div>
-                <div className="flex flex-col gap-y-3.5 w-12/25">
-                  
-                    <CustomInput
-                      name="password"
-                      type="password"
-                      placeholder="Password"
-                      label="Confirm Password"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Password is required",
-                        },
-                      ]}
-                      onChange={(e) => console.log(e)}
-                    />
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-y-3.5 w-12/25">
-                  <label htmlFor="gender">Gender </label>
-                  {/* <CustomSelect
+                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
+                  <Select
+                    name="gender"
+                    label={
+                      <p className="text-base">
+                        Gender <span className="text-red">*</span>{" "}
+                      </p>
+                    }
+                    placeholder="Gender"
                     options={[
                       { label: "Male", value: "male" },
                       { label: "Female", value: "female" },
                     ]}
-                  /> */}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Last Name is required",
+                      },
+                    ]}
+                    onChange={(e) => console.log(e)}
+                  />
                 </div>
+              </div>
+
+             <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
+                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
+                  <CustomInput
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    label={
+                      <p className="text-base">
+                        Password <span className="text-red">*</span>{" "}
+                      </p>
+                    }
+                    rules={[
+                      {
+                        required: true,
+                        message: "Password is required",
+                      },
+                    ]}
+                    onChange={(e) => console.log(e)}
+                  />
+                </div>
+                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
+                  <CustomInput
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    label={
+                      <p className="text-base">
+                        Confirm password{" "}
+                        <span className="text-red">*</span>{" "}
+                      </p>
+                    }
+                    rules={[
+                      {
+                        required: true,
+                        message: "Password is required",
+                      },
+                    ]}
+                    onChange={(e) => console.log(e)}
+                  />
+                </div>
+              </div>
+
+              <CustomTextArea
+                label={<p className="text-base">Bio</p>}
+                placeholder="Enter Bio"
+                onChange={(e) => console.log(e)}
+                name="bio"
+              />
+
+              <div className="pb-10">
+                <SubmitButton
+                  title="Signup"
+                  bgVariant="primary"
+                  className="!w-full"
+                  disabled={
+                    !values?.first_name ||
+                    !values?.last_name ||
+                    !values?.email ||
+                    !values?.phone_number ||
+                    !values?.password ||
+                    !values?.confirm_password ||
+                    !values?.user_name ||
+                    !values?.gender
+                  }
+                />
+                <p className="italic mt-2">
+                  If you already have an account, Please{" "}
+                  <span
+                    className="text-lemon font-medium cursor-pointer hover:underline"
+                    onClick={() => router.push("/login")}
+                  >
+                    Login
+                  </span>
+                </p>
               </div>
             </Form>
           </div>

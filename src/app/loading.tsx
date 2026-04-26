@@ -4,8 +4,8 @@ import { Loader } from "#assets/svg";
 
 const Loading = () => {
   return (
-    <div className="h-full w-full flex flex-col justify-center items-center">
-      <Image src={Loader} alt="" className="" loading="eager"/>
+    <div className="h-[100vh] w-[100vw] flex flex-col justify-center items-center">
+      <Image src={Loader} alt="" className="m-auto" loading="eager" />
     </div>
   );
 };

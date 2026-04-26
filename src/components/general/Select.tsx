@@ -16,10 +16,16 @@ export const Select: React.FC<AppSelectProps> = ({
   label,
   ...selectRest
 }) => {
+  const className = "!h-[60px] text-base";
+
   return (
     <>
       <Form.Item name={name} label={label} rules={rules}>
-        <AntSelect {...selectRest} placeholder={placeholder} />
+        <AntSelect
+          {...selectRest}
+          placeholder={placeholder}
+          className={className}
+        />
       </Form.Item>
     </>
   );
