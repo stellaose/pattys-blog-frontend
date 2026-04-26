@@ -1,0 +1,80 @@
+# .github/workflows/deploy.yml
+name: Build and Deploy
+
+on:
+  push:
+    branches: ["main", "develop"]
+           
+  pull_request:
+    branches: ["main", "develop"]
+          
+jobs:
+  # ─── Job 1: Build and Test ──────────────────────────────────
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run linter
+        run: yarn lint
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+  # ─── Job 2: Deploy to GCP ───────────────────────────────────
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build   # only runs if build job succeeds
+    if: github.ref == 'refs/heads/main'  # only deploys on main branch
+
+    steps:
+      - name: Deploy to GCP server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            # Login to container registry
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # Pull latest image
+            docker pull ghcr.io/${{ github.repository }}:latest
+
+            # Stop and remove old container
+            docker stop my-next-app || true
+            docker rm my-next-app || true
+
+            # Start new container
+            docker run -d \
+              --name my-next-app \
+              --restart always \
+              -p 3000:3000 \
+              ghcr.io/${{ github.repository }}:latest
+
+            # Remove old unused images
+            docker image prune -f
