@@ -11,7 +11,7 @@ const Login = () => {
         <>
           <div className="w-[90%] mx-auto">
             <div className="flex flex-col justify-center items-center pt-[56px] gap-y-5">
-              <Image src={Logo} alt="" className="h-[50px] w-auto" />
+              <Image src={Logo} alt="" className="h-[50px] w-auto" loading="eager"/>
               <p>Welcome back!</p>
             </div>
 
