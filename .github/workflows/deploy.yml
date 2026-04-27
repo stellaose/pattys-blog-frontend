@@ -71,7 +71,7 @@ jobs:
 
             docker stop my-next-app || true
             docker rm my-next-app || true
-
+            docker ps -a | grep my-next-app || echo "Old container removed"
             docker run -d \
               --name my-next-app \
               --restart always \
