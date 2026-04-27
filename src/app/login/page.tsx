@@ -1,6 +1,9 @@
 "use client";
 import { AuthLayout } from "#components/layouts";
 import React from "react";
+import { Form } from "antd";
+import { CustomInput } from "#/components/general";
+import { SubmitButton } from "#/components/elements";
 import { Logo, LoginImg } from "#assets/images";
 import Image from "next/image";
 
@@ -11,7 +14,12 @@ const Login = () => {
         <>
           <div className="w-[90%] mx-auto">
             <div className="flex flex-col justify-center items-center pt-[56px] gap-y-5">
-              <Image src={Logo} alt="" className="h-[50px] w-auto" loading="eager"/>
+              <Image
+                src={Logo}
+                alt=""
+                className="h-[50px] w-auto"
+                loading="eager"
+              />
               <p>Welcome back!</p>
             </div>
 
