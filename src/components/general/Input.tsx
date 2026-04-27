@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { Form, Input, InputProps } from "antd";
 import { Rule } from "antd/es/form";
@@ -45,13 +46,9 @@ export const CustomInput: React.FC<AppInputProps> = ({
           placeholder={placeholder}
           className={className}
           onChange={onChange}
-          iconRender={(visible) =>
-            visible ? (
-              <RiEyeCloseLine size={24} />
-            ) : (
-              <RiEyeCloseLine size={24} />
-            )
-          }
+          iconRender={(_visible) => (
+            <RiEyeCloseLine size={24} color="#969191" />
+          )}
         />
       )}
     </Form.Item>
