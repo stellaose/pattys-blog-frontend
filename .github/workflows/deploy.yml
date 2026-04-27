@@ -1,9 +1,11 @@
 name: Build and Deploy
 
 on:
-  push:
+  push: 
+    branches: ["main"]
   pull_request:
-    branches: ["main", "develop"]
+    branches: ["main"]
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
