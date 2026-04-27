@@ -2,7 +2,7 @@ name: Build and Deploy
 
 on:
   push: 
-    branches: ["main"]
+    branches: ["main", "develop", "feat/*", "fix/*", "hotfix/*"]
   pull_request:
     branches: ["main"]
     types: [opened, synchronize, reopened]
@@ -55,7 +55,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    if: (github.event_name == 'push' ) 
+    if: ( github.ref == 'refs/heads/main' && github.event_name == 'push') 
 
     steps:
       - name: Deploy to GCP server
