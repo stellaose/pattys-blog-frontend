@@ -1,18 +1,24 @@
 "use client";
 import { AuthLayout } from "#components/layouts";
 import React from "react";
-import { Form } from "antd";
+import { Form, Col, Row } from "antd";
 import { CustomInput } from "#/components/general";
 import { SubmitButton } from "#/components/elements";
 import { Logo, LoginImg } from "#assets/images";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
+  const router = useRouter();
+
+  const [form] = Form.useForm();
+  const values = Form.useWatch([], form);
+
   return (
     <>
       <AuthLayout image={LoginImg}>
         <>
-          <div className="w-[90%] mx-auto">
+          <div className="2lg:w-9/10 xxl:w-4/5 md:w-3/4 sm:w-4/5 w-9/10 !mx-auto h-full flex flex-col justify-center ">
             <div className="flex flex-col justify-center items-center pt-[56px] gap-y-5">
               <Image
                 src={Logo}
@@ -23,48 +29,85 @@ const Login = () => {
               <p>Welcome back!</p>
             </div>
 
-            <form className="mt-20 flex flex-col gap-y-6">
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-y-3.5 w-12/25">
-                  <label htmlFor="first_name">First Name </label>
-                  <input
-                    name="first_name"
-                    type="text"
-                    placeholder="First Name"
-                    className=" w-full"
+            <Form
+              className="!mt-20 flex flex-col gap-y-8"
+              requiredMark={false}
+              layout="vertical"
+              autoComplete="off"
+              form={form}
+              onFinish={() => router.push("/")}
+            >
+              <Row
+                gutter={24}
+                className="flex flex-col gap-y-2 justify-between items-center"
+              >
+                <Col span={24}>
+                  <CustomInput
+                    name="email"
+                    label={
+                      <p className="text-base">
+                        E-mail <span className="text-red">*</span>{" "}
+                      </p>
+                    }
+                    type="email"
+                    placeholder="E-mail"
+                    rules={[
+                      {
+                        required: true,
+                        message: "E-mail is required",
+                      },
+                    ]}
+                    onChange={(e) => console.log(e)}
                   />
-                </div>
-                <div className="flex flex-col w-12/25 gap-y-3.5">
-                  <label htmlFor="last_name">Last Name </label>
-                  <input
-                    name="last_name"
-                    type="text"
-                    placeholder="Last Name"
-                    className="w-full "
+                </Col>
+                <Col span={24}>
+                  {" "}
+                  <CustomInput
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    label={
+                      <p className="text-base">
+                        Password <span className="text-red">*</span>{" "}
+                      </p>
+                    }
+                    rules={[
+                      {
+                        required: true,
+                        message: "Password is required",
+                      },
+                    ]}
+                    onChange={(e) => console.log(e)}
                   />
+                </Col>
+              </Row>
+
+              <div>
+                <SubmitButton
+                  title="Log in"
+                  bgVariant="secondary"
+                  className="!w-full"
+                  disabled={!values?.email || !values?.password}
+                />
+                <div className="flex justify-between items-center">
+                  <p
+                    className="italic mt-2 font-bold cursor-pointer hover:underline"
+                    onClick={() => router.push("/forgot-password")}
+                  >
+                    Forgot your password?
+                  </p>
+                  <p className="italic mt-2">
+                    If you don&apos;t have an account, Please{" "}
+                    <span
+                      className="text-orange font-medium cursor-pointer hover:underline"
+                      onClick={() => router.push("/signup")}
+                    >
+                      Signup
+                    </span>
+                  </p>
                 </div>
               </div>
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-y-3.5 w-12/25">
-                  <label htmlFor="user_name">Username </label>
-                  <input
-                    name="user_name"
-                    type="text"
-                    placeholder="Username"
-                    className=" w-full"
-                  />
-                </div>
-                <div className="flex flex-col w-12/25 gap-y-3.5">
-                  <label htmlFor="last_name">Last Name </label>
-                  <input
-                    name="last_name"
-                    type="text"
-                    placeholder="Last Name"
-                    className="w-full "
-                  />
-                </div>
-              </div>
-            </form>
+            </Form>
           </div>
         </>
       </AuthLayout>
