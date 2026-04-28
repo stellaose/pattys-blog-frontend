@@ -65,7 +65,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo ${{ secrets.GH_PAT}} | docker login ghcr.io -u stellaose --password-stdin
 
             docker pull ghcr.io/${{ github.repository }}:latest
 
