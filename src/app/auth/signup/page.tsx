@@ -76,7 +76,7 @@ const Signup = () => {
                 </div>
               </div>
 
-             <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
+              <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
                 <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
                   <CustomInput
                     name="user_name"
@@ -172,7 +172,7 @@ const Signup = () => {
                 </div>
               </div>
 
-             <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
+              <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
                 <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
                   <CustomInput
                     name="password"
@@ -241,7 +241,7 @@ const Signup = () => {
                   If you already have an account, Please{" "}
                   <span
                     className="text-lemon font-medium cursor-pointer hover:underline"
-                    onClick={() => router.push("/login")}
+                    onClick={() => router.push("/auth/login")}
                   >
                     Login
                   </span>
