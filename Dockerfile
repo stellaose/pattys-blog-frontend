@@ -47,13 +47,9 @@ ENV NODE_ENV=production
 
 
 # $ Copy only what's needed to run the app
-# COPY --from=builder /app/public ./public
-# COPY --from=builder /app/.next/standalone ./
-# COPY --from=builder /app/.next/static ./.next/static
-
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
 # ` Set correct ownership
 # ~ TIP Do not run the app as root so in case of a security issue, the app configuration is not accessible by the root user
@@ -61,12 +57,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 # ~ chmod (change permissions) 7 = read, write, execute, 5 = read, write, 1 = execute 2 = write 4 = read
 # ~ gid = group id, uid = user id, -R = recursive because it is a directory
 RUN addgroup --system --gid 1001 nodejs && \
-  adduser --system --uid 1001 nextjs 
-  
-# RUN addgroup --system --gid 1001 nodejs && \
-#   adduser --system --uid 1001 nextjs && \
-#   chown -R nextjs:nodejs /app && \ 
-#   chmod -R 755 /app
+  adduser --system --uid 1001 nextjs && \
+  chown -R nextjs:nodejs /app && \ 
+  chmod -R 755 /app
 
 
 # ^ Switch to non-root user so that only the file and directory owned by the user can be accessed
