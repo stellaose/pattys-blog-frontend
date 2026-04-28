@@ -1,8 +1,8 @@
 "use client";
-import { LayoutAuth } from "#/components/layouts";
+import { LayoutAuth } from "#components/layouts";
 import React from "react";
 import { Form, Row, Col } from "antd";
-import { SubmitButton } from "#/components/elements";
+import { SubmitButton } from "#components/elements";
 import { useRouter } from "next/navigation";
 import { CustomInput } from "#components/general";
 
