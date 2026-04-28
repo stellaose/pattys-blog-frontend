@@ -59,3 +59,21 @@
   box-shadow: 0 0 0 2px rgba(235, 141, 65, 0.1);
   background-color: var(--color-white-100);
 }
+
+.ant-otp {
+  display: flex;
+  justify-content: space-between;
+  column-gap: unset;
+  width: 100%;
+}
+
+.ant-otp .ant-otp-input {
+  height: 54px !important;
+  width: 54px !important;
+}
+
+.ant-otp .ant-otp-input-wrapper,
+.ant-otp .ant-otp-input-wrapper .ant-otp-mask-input.ant-input-outlined {
+  border: 1px solid var(--color-orange-disabled);
+  border-radius: 12px;
+}

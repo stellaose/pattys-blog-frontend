@@ -13,7 +13,7 @@ export const LayoutAuth: React.FC<{
           <div>
             <Image src={Logo} alt="" loading="eager" className="h-[50px] w-auto mx-auto" />
           
-            <p className="text-center mt-10 text-black text-base">{description}</p>
+            <p className="text-center mt-10 text-black text-18">{description}</p>
             
             <div className="mt-20">
               {children}
