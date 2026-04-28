@@ -21,7 +21,7 @@ const ForgotPassword = () => {
           layout="vertical"
           autoComplete="off"
           form={form}
-          onFinish={() => router.push("/verify-otp")}
+          onFinish={() => router.push("/auth/verify-otp")}
         >
           <div className="lg:w-3/4 ssm:w-4/5 w-9/10 mx-auto">
             <Row

@@ -31,12 +31,12 @@ export const Header = () => {
           </div>
 
           <div className="flex items-center gap-x-4">
-            <Link href="/signup">
+            <Link href="/auth/signup">
               <span className="border border-orange text-white-100 bg-orange py-[13px] px-6 rounded-lg cursor-pointer hover:scale-105 transition transform duration-300 hover:text-orange hover:bg-transparent font-semibold">
                 Sign up
               </span>
             </Link>
-            <Link href="/login">
+            <Link href="/auth/login">
               <span className="border border-lemon bg-lemon text-black py-[13px] px-6 rounded-lg cursor-pointer hover:scale-105 transition transform duration-300 hover:text-lemon hover:bg-transparent font-semibold">
                 Log in
               </span>

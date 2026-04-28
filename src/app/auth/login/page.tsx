@@ -92,7 +92,7 @@ const Login = () => {
                 <div className="flex justify-between items-center">
                   <p
                     className="italic mt-2 font-bold cursor-pointer hover:underline"
-                    onClick={() => router.push("/forgot-password")}
+                    onClick={() => router.push("/auth/forgot-password")}
                   >
                     Forgot your password?
                   </p>
@@ -100,7 +100,7 @@ const Login = () => {
                     If you don&apos;t have an account, Please{" "}
                     <span
                       className="text-orange font-medium cursor-pointer hover:underline"
-                      onClick={() => router.push("/signup")}
+                      onClick={() => router.push("/auth/signup")}
                     >
                       Signup
                     </span>
