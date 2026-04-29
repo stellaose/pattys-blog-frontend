@@ -29,11 +29,32 @@
       "#components/*": [
         "./src/components/*"
       ],
+      "#elements/*": [
+        "./src/components/elements/*"
+      ],
+      "#layouts/*": [
+        "./src/components/layouts/*"
+      ],
+      "#general/*": [
+        "./src/components/general/*"
+      ],
+      "#hooks/*": [
+        "./src/hooks/*"
+      ],
       "#assets/*": [
         "./src/assets/*"
       ],
       "#config/*": [
         "./src/config/*"
+      ],
+      "#model/*": [
+        "./src/model/*"
+      ],
+      "#store/*": [
+        "./src/store/*"
+      ],
+      "#utils/*": [
+        "./src/utils/*"
       ]
     }
   },
