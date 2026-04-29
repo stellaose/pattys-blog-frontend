@@ -39,7 +39,7 @@ ENV NODE_ENV=production
 RUN yarn build
 
 # * Stage 3: Runner 
-FROM node:24-alpine AS runner
+FROM builder AS runner
 
 WORKDIR /app
 
