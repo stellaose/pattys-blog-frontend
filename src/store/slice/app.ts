@@ -7,10 +7,7 @@ const initialState: State.App = {
   response: undefined,
   url: "",
   isLoggedIn: false,
-  isPasswordReset: false,
   userId: "",
-  reservation: undefined,
-showLoginModal: false
 };
 
 const AppSlice = createSlice({
