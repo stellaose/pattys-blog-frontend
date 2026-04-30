@@ -58,12 +58,10 @@ export const baseQueryWithReauth =
       status === 401 ||
       (status === 500 && errorData?.data?.name === "TokenExpiredError") ||
       (status === 500 && errorData?.data?.name === "JsonWebTokenError");
-      ;
     // NotifySessionExpired();
     if (isTokenExpired) {
       handleLogout();
 
-     
       if (typeof window !== "undefined") {
         window.location.replace("/");
       }

@@ -13,13 +13,13 @@ export const useNotify = () => {
     notification.open({
       message: undefined,
       placement: "top",
-      className: `${!isSuccess ? "!text-red !border-red" : "!text-green !border-green"} !bg-white  !rounded-xl`,
+      className: `${!isSuccess ? "!text-red !border-red " : "!text-green !border-green"} !bg-white !rounded-lg  !border`,
       description: (
-        <p
+        <span
           className={`!text-sm !font-medium ${!isSuccess ? "!text-red" : "!text-green"}`}
         >
           {message?.slice(0, 1)?.toUpperCase() + message.slice(1)}
-        </p>
+        </span>
       ),
       duration: duration || 4.5,
       closeIcon: (
