@@ -3,7 +3,7 @@ import { AuthLayout } from "#components/layouts";
 import React from "react";
 import { Form, Col, Row } from "antd";
 import { CustomInput } from "#/components/general";
-import { SubmitButton } from "#/components/elements";
+import { SubmitButton } from "#/components/general";
 import { Logo, LoginImg } from "#assets/images";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

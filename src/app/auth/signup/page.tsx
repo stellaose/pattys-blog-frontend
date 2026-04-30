@@ -1,11 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { AuthLayout } from "#components/layouts";
-import React from "react";
+import React, { useEffect } from "react";
 import { Logo, SignupImg, NigeriaFlag } from "#assets/images";
 import { Form, Input } from "antd";
 import { CustomInput, CustomTextArea, Select } from "#components/general";
 import Image from "next/image";
-import { SubmitButton } from "#/components/elements";
+import { SubmitButton } from "#/components/general";
+import { useAuth, useFieldRequest } from "#/hooks";
 import { useRouter } from "next/navigation";
 
 const Signup = () => {
@@ -13,6 +15,17 @@ const Signup = () => {
 
   const [form] = Form.useForm();
   const values = Form.useWatch([], form);
+
+  const { setRequestField } = useFieldRequest();
+
+  const { onSignup, postAuthResponse } = useAuth();
+
+  useEffect(() => {
+    if (postAuthResponse.isSuccess) {
+      form.resetFields();
+      router.push("/auth/verify-otp");
+    }
+  }, [postAuthResponse.isSuccess]);
 
   return (
     <>
@@ -35,6 +48,7 @@ const Signup = () => {
               layout="vertical"
               autoComplete="off"
               form={form}
+              onFinish={onSignup}
             >
               <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
                 <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
@@ -53,7 +67,9 @@ const Signup = () => {
                         message: "First Name is required",
                       },
                     ]}
-                    onChange={(e) => console.log(e)}
+                    onChange={(e) =>
+                      setRequestField("first_name", e.target.value)
+                    }
                   />
                 </div>
                 <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
@@ -71,7 +87,9 @@ const Signup = () => {
                         message: "Last Name is required",
                       },
                     ]}
-                    onChange={(e) => console.log(e)}
+                    onChange={(e) =>
+                      setRequestField("last_name", e.target.value)
+                    }
                   />
                 </div>
               </div>
@@ -89,10 +107,12 @@ const Signup = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Last Name is required",
+                        message: "Username is required",
                       },
                     ]}
-                    onChange={(e) => console.log(e)}
+                    onChange={(e) =>
+                      setRequestField("user_name", e.target.value)
+                    }
                   />
                 </div>
                 <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
@@ -120,7 +140,7 @@ const Signup = () => {
                         type="tel"
                         className="!h-[60px] text-base"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          console.log(e)
+                          setRequestField("phone_number", e.target.value)
                         }
                       />
                     </div>
@@ -145,7 +165,7 @@ const Signup = () => {
                         message: "E-mail is required",
                       },
                     ]}
-                    onChange={(e) => console.log(e)}
+                    onChange={(e) => setRequestField("email", e.target.value)}
                   />
                 </div>
                 <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
@@ -167,7 +187,7 @@ const Signup = () => {
                         message: "Last Name is required",
                       },
                     ]}
-                    onChange={(e) => console.log(e)}
+                    onChange={(value) => setRequestField("gender", value)}
                   />
                 </div>
               </div>
@@ -189,12 +209,14 @@ const Signup = () => {
                         message: "Password is required",
                       },
                     ]}
-                    onChange={(e) => console.log(e)}
+                    onChange={(e) =>
+                      setRequestField("password", e.target.value)
+                    }
                   />
                 </div>
                 <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
                   <CustomInput
-                    name="password"
+                    name="confirm_password"
                     type="password"
                     placeholder="Password"
                     label={
@@ -206,10 +228,12 @@ const Signup = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Password is required",
+                        message: "Confirm password is required",
                       },
                     ]}
-                    onChange={(e) => console.log(e)}
+                    onChange={(e) =>
+                      setRequestField("confirm_password", e.target.value)
+                    }
                   />
                 </div>
               </div>
@@ -217,7 +241,7 @@ const Signup = () => {
               <CustomTextArea
                 label={<p className="text-base">Bio</p>}
                 placeholder="Enter Bio"
-                onChange={(e) => console.log(e)}
+                onChange={(e: any) => setRequestField("bio", e.target.value)}
                 name="bio"
               />
 
@@ -226,6 +250,7 @@ const Signup = () => {
                   title="Signup"
                   bgVariant="primary"
                   className="!w-full"
+                  loading={postAuthResponse.isLoading}
                   disabled={
                     !values?.first_name ||
                     !values?.last_name ||

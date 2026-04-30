@@ -1,6 +1,7 @@
-'use client'
+"use client";
 export const PROD = "development" as "development" | "production";
-export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+export const BASE_URL = "http://localhost:3003/api/v1";
+// export const BASE_URL = "https://pattys-blog-backend.onrender.com";
 
 export const FORM_METHODS = {
   POST: "POST",

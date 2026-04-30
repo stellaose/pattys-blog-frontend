@@ -3,7 +3,7 @@ import { LayoutAuth } from "#/components/layouts";
 import React from "react";
 import { Form, Col, Row } from "antd";
 import { CustomInput } from "#/components/general";
-import { SubmitButton } from "#/components/elements";
+import { SubmitButton } from "#/components/general";
 import { useRouter } from "next/navigation";
 
 const ChangePassword = () => {
@@ -47,8 +47,8 @@ const ChangePassword = () => {
                   onChange={(e) => console.log(e)}
                 />
               </Col>
-              
-               <Col span={24}>
+
+              <Col span={24}>
                 <CustomInput
                   name="confirm_password"
                   label={

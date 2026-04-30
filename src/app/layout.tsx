@@ -4,6 +4,7 @@ import { getThemeConfig } from "#config/theme";
 import { App as AntApp, ConfigProvider } from "antd";
 import enUS from "antd/locale/en_US";
 import { RouteProgress } from "#components/general";
+import { Providers } from "./Provider";
 
 export const metadata: Metadata = {
   title: "Pattys",
@@ -19,11 +20,13 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning className="min-h-full flex flex-col">
         <RouteProgress />
-        <ConfigProvider theme={getThemeConfig()} locale={enUS}>
-          <main>
-            <AntApp>{children}</AntApp>
-          </main>
-        </ConfigProvider>
+        <Providers>
+          <AntApp>
+            <ConfigProvider theme={getThemeConfig()} locale={enUS}>
+              <main>{children}</main>
+            </ConfigProvider>
+          </AntApp>
+        </Providers>
       </body>
     </html>
   );

@@ -10,12 +10,7 @@ type AppInputProps = InputProps & {
   placeholder: string;
   type?: "text" | "password" | "email" | "tel";
   rules?: Rule[];
-  onChange: (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
-      | React.ChangeEvent<HTMLSelectElement>,
-  ) => void;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 };
 
 export const CustomInput: React.FC<AppInputProps> = ({
