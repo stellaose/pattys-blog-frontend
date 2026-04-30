@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { LayoutAuth } from "#components/layouts";
@@ -15,14 +16,14 @@ const VerifyOtp = () => {
   const { postAuthResponse, onResendOtp } = useAuth();
   const { onVerifyOTP, postAuthResponse: verifyOTPResponse } = useAuth();
 
-   const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
-    const storedEmail = sessionStorage.getItem("email");
-    const storedUserId = sessionStorage.getItem("userId");
+    const storedEmail = sessionStorage.getItem("email") ?? "";
+    const storedUserId = sessionStorage.getItem("userId") ?? "";
 
-    setEmail(storedEmail ?? '');
+    setEmail(storedEmail);
     setUserId(storedUserId ?? "");
   }, []);
 
