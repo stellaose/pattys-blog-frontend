@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { LayoutAuth } from "#components/layouts";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitButton } from "#/components/general";
 import { Form, Input, Button, Spin } from "antd";
 import { useAuth, useFieldRequest } from "#/hooks";
@@ -15,8 +15,16 @@ const VerifyOtp = () => {
   const { postAuthResponse, onResendOtp } = useAuth();
   const { onVerifyOTP, postAuthResponse: verifyOTPResponse } = useAuth();
 
-  const email = sessionStorage.getItem("email");
-  const userId = sessionStorage.getItem("userId") ?? "";
+   const [email, setEmail] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
+
+  useEffect(() => {
+    const storedEmail = sessionStorage.getItem("email");
+    const storedUserId = sessionStorage.getItem("userId");
+
+    setEmail(storedEmail ?? '');
+    setUserId(storedUserId ?? "");
+  }, []);
 
   const maskedEmail =
     email && email?.slice(0, 2) + "**************" + email?.slice(-2);
