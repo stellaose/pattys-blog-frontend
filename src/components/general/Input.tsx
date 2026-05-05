@@ -3,12 +3,15 @@ import React from "react";
 import { Form, Input, InputProps } from "antd";
 import { Rule } from "antd/es/form";
 import { RiEyeCloseLine } from "react-icons/ri";
+import { NigeriaFlag } from "#assets/images";
+import Image from "next/image";
 
 type AppInputProps = InputProps & {
   name: string;
   label: React.ReactNode;
   placeholder: string;
-  type?: "text" | "password" | "email" | "tel";
+  type?: "text" | "password" | "email" | "tel" | "phoneNo";
+  value?: string | number;
   rules?: Rule[];
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 };
@@ -19,6 +22,7 @@ export const CustomInput: React.FC<AppInputProps> = ({
   rules,
   type = "text",
   label,
+  value,
   onChange,
   required = false,
   ...inputRest
@@ -35,6 +39,24 @@ export const CustomInput: React.FC<AppInputProps> = ({
           className={className}
           onChange={onChange}
         />
+      ) : type === "phoneNo" ? (
+        <div className="flex items-center gap-x-4">
+          <Image
+            src={NigeriaFlag}
+            alt=""
+            className="h-[48px] w-auto"
+            loading="eager"
+          />{" "}
+          <Input
+            placeholder="Phone Number"
+            required
+            type="tel"
+            maxLength={11}
+            className="!h-[60px] text-base"
+            value={value}
+            onChange={onChange}
+          />
+        </div>
       ) : (
         <Input.Password
           {...inputRest}

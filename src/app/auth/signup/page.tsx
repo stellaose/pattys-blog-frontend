@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { AuthLayout } from "#components/layouts";
-import React, { useEffect } from "react";
-import { Logo, SignupImg, NigeriaFlag } from "#assets/images";
-import { Form, Input } from "antd";
+import React, { useEffect, useState } from "react";
+import { Logo, SignupImg } from "#assets/images";
+import { Form } from "antd";
 import { CustomInput, CustomTextArea, Select } from "#components/general";
 import Image from "next/image";
 import { SubmitButton } from "#/components/general";
@@ -11,6 +11,7 @@ import { useAuth, useFieldRequest } from "#/hooks";
 import { useRouter } from "next/navigation";
 
 const Signup = () => {
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const router = useRouter();
 
   const [form] = Form.useForm();
@@ -20,10 +21,24 @@ const Signup = () => {
 
   const { onSignup, postAuthResponse } = useAuth();
 
+  const handleFieldChange = () => {
+    const values = form.getFieldsValue();
+    const isValid =
+      values?.first_name &&
+      values?.last_name &&
+      values?.email &&
+      values?.phone_number &&
+      values?.password &&
+      values?.confirm_password &&
+      values?.user_name &&
+      values?.gender;
+
+    setIsFormValid(!!isValid);
+  };
+
   useEffect(() => {
     if (postAuthResponse.isSuccess) {
       form.resetFields();
-      router.push("/auth/verify-otp");
     }
   }, [postAuthResponse.isSuccess]);
 
@@ -67,9 +82,10 @@ const Signup = () => {
                         message: "First Name is required",
                       },
                     ]}
-                    onChange={(e) =>
-                      setRequestField("first_name", e.target.value)
-                    }
+                    onChange={(e) => {
+                      setRequestField("first_name", e.target.value);
+                      handleFieldChange();
+                    }}
                   />
                 </div>
                 <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
@@ -87,9 +103,10 @@ const Signup = () => {
                         message: "Last Name is required",
                       },
                     ]}
-                    onChange={(e) =>
-                      setRequestField("last_name", e.target.value)
-                    }
+                    onChange={(e) => {
+                      setRequestField("last_name", e.target.value);
+                      handleFieldChange();
+                    }}
                   />
                 </div>
               </div>
@@ -116,7 +133,7 @@ const Signup = () => {
                   />
                 </div>
                 <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
-                  <Form.Item
+                  <CustomInput
                     name="phone_number"
                     label={
                       <p className="flex gap-1 items-center text-base">
@@ -125,26 +142,22 @@ const Signup = () => {
                     }
                     rules={[
                       { required: true, message: "Phone number is required" },
+                      {
+                        pattern: new RegExp("[0]{1}[7-9]{1}[0-9]{9}"),
+                        message: "Phone number must start with 07 or 08 or 09",
+                      },
                     ]}
-                  >
-                    <div className="flex items-center gap-x-4">
-                      <Image
-                        src={NigeriaFlag}
-                        alt=""
-                        className="h-[48px] w-auto"
-                        loading="eager"
-                      />{" "}
-                      <Input
-                        placeholder="Phone Number"
-                        required
-                        type="tel"
-                        className="!h-[60px] text-base"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setRequestField("phone_number", e.target.value)
-                        }
-                      />
-                    </div>
-                  </Form.Item>
+                    type="phoneNo"
+                    value={values?.phone_number?.replace(/[^0-9]/g, "")}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setRequestField(
+                        "phone_number",
+                        e.target.value?.replace(/[^0-9]/g, ""),
+                      );
+                      handleFieldChange();
+                    }}
+                    placeholder="Phone Number"
+                  />
                 </div>
               </div>
 
@@ -165,7 +178,10 @@ const Signup = () => {
                         message: "E-mail is required",
                       },
                     ]}
-                    onChange={(e) => setRequestField("email", e.target.value)}
+                    onChange={(e) => {
+                      setRequestField("email", e.target.value);
+                      handleFieldChange();
+                    }}
                   />
                 </div>
                 <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
@@ -187,7 +203,10 @@ const Signup = () => {
                         message: "Last Name is required",
                       },
                     ]}
-                    onChange={(value) => setRequestField("gender", value)}
+                    onChange={(value) => {
+                      setRequestField("gender", value);
+                      handleFieldChange();
+                    }}
                   />
                 </div>
               </div>
@@ -208,10 +227,18 @@ const Signup = () => {
                         required: true,
                         message: "Password is required",
                       },
+                      {
+                        pattern: new RegExp(
+                          "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+                        ),
+                        message:
+                          "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character",
+                      },
                     ]}
-                    onChange={(e) =>
-                      setRequestField("password", e.target.value)
-                    }
+                    onChange={(e) => {
+                      setRequestField("password", e.target.value);
+                      handleFieldChange();
+                    }}
                   />
                 </div>
                 <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
@@ -230,10 +257,21 @@ const Signup = () => {
                         required: true,
                         message: "Confirm password is required",
                       },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (!value || getFieldValue("password") === value) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(
+                            new Error("Passwords do not match"),
+                          );
+                        },
+                      }),
                     ]}
-                    onChange={(e) =>
-                      setRequestField("confirm_password", e.target.value)
-                    }
+                    onChange={(e) => {
+                      setRequestField("confirm_password", e.target.value);
+                      handleFieldChange();
+                    }}
                   />
                 </div>
               </div>
@@ -241,7 +279,10 @@ const Signup = () => {
               <CustomTextArea
                 label={<p className="text-base">Bio</p>}
                 placeholder="Enter Bio"
-                onChange={(e: any) => setRequestField("bio", e.target.value)}
+                onChange={(e: any) => {
+                  setRequestField("bio", e.target.value);
+                  handleFieldChange();
+                }}
                 name="bio"
               />
 
@@ -251,16 +292,7 @@ const Signup = () => {
                   bgVariant="primary"
                   className="!w-full"
                   loading={postAuthResponse.isLoading}
-                  disabled={
-                    !values?.first_name ||
-                    !values?.last_name ||
-                    !values?.email ||
-                    !values?.phone_number ||
-                    !values?.password ||
-                    !values?.confirm_password ||
-                    !values?.user_name ||
-                    !values?.gender
-                  }
+                  disabled={!isFormValid}
                 />
                 <p className="italic mt-2">
                   If you already have an account, Please{" "}
