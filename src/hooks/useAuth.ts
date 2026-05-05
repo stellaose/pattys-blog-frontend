@@ -43,12 +43,15 @@ export const useAuth = () => {
           Notify(response?.data?.message, true);
           sessionStorage.setItem("email", state.request.email ?? "");
           sessionStorage.setItem("userId", response?.data?.user?.userId ?? "");
+
           dispatch(
             setAllAppKeys({
               ...state,
               request: undefined,
             }),
           );
+
+          router.push("/auth/verify-otp");
         }
       } else {
         Notify(response?.error?.data?.message, false);
@@ -71,16 +74,16 @@ export const useAuth = () => {
       });
 
       if (response && "data" in response) {
-          Notify(response?.data?.message, true);
-          sessionStorage.removeItem("email");
-          dispatch(
-            setAllAppKeys({
-              ...state,
-              request: undefined,
-            }),
-          );
+        Notify(response?.data?.message, true);
+        sessionStorage.removeItem("email");
+        dispatch(
+          setAllAppKeys({
+            ...state,
+            request: undefined,
+          }),
+        );
 
-          router.push("/auth/login");
+        router.push("/auth/login");
       } else {
         Notify(response?.error?.data?.message, false);
       }
@@ -127,24 +130,20 @@ export const useAuth = () => {
       const user = response?.data?.data?.user;
       if (response && "data" in response) {
         if ("data" in response.data) {
-          if (user?.profile?.profiletype !== "user") {
-            Notify("No user credentials found for this account.", false);
-          } else {
-            Notify(response?.data?.message, true);
+          Notify(response?.data?.message, true);
 
-            sessionStorage.setItem(
-              `${process.env.NEXT_PUBLIC_TOKEN}`,
-              response?.data?.data?.token,
-            );
-            dispatch(
-              setAllAppKeys({
-                ...state,
-                request: undefined,
-                isLoggedIn: true,
-                userId: response?.data?.data?.user?.id,
-              }),
-            );
-          }
+          sessionStorage.setItem(
+            `${process.env.NEXT_PUBLIC_TOKEN}`,
+            response?.data?.data?.token,
+          );
+          dispatch(
+            setAllAppKeys({
+              ...state,
+              request: undefined,
+              isLoggedIn: true,
+              userId: response?.data?.user?.userId,
+            }),
+          );
         }
       } else {
         Notify(response?.error?.data?.message, false);
