@@ -1,18 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { AuthLayout } from "#components/layouts";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Logo, SignupImg } from "#assets/images";
 import { Form } from "antd";
 import { CustomInput, CustomTextArea, Select } from "#components/general";
 import Image from "next/image";
 import { SubmitButton } from "#/components/general";
 import { useAuth, useFieldRequest } from "#/hooks";
+import { useAppSelector } from "#store/hook";
 import { useRouter } from "next/navigation";
 
 const Signup = () => {
-  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const router = useRouter();
+
+  const state = useAppSelector((state) => state.app);
 
   const [form] = Form.useForm();
   const values = Form.useWatch([], form);
@@ -21,26 +23,13 @@ const Signup = () => {
 
   const { onSignup, postAuthResponse } = useAuth();
 
-  const handleFieldChange = () => {
-    const values = form.getFieldsValue();
-    const isValid =
-      values?.first_name &&
-      values?.last_name &&
-      values?.email &&
-      values?.phone_number &&
-      values?.password &&
-      values?.confirm_password &&
-      values?.user_name &&
-      values?.gender;
-
-    setIsFormValid(!!isValid);
-  };
-
   useEffect(() => {
     if (postAuthResponse.isSuccess) {
       form.resetFields();
     }
   }, [postAuthResponse.isSuccess]);
+
+ 
 
   return (
     <>
@@ -83,8 +72,8 @@ const Signup = () => {
                       },
                     ]}
                     onChange={(e) => {
+                      form.setFieldValue("first_name", e.target.value);
                       setRequestField("first_name", e.target.value);
-                      handleFieldChange();
                     }}
                   />
                 </div>
@@ -104,8 +93,8 @@ const Signup = () => {
                       },
                     ]}
                     onChange={(e) => {
+                      form.setFieldValue("last_name", e.target.value);
                       setRequestField("last_name", e.target.value);
-                      handleFieldChange();
                     }}
                   />
                 </div>
@@ -127,9 +116,10 @@ const Signup = () => {
                         message: "Username is required",
                       },
                     ]}
-                    onChange={(e) =>
-                      setRequestField("user_name", e.target.value)
-                    }
+                    onChange={(e) => {
+                      form.setFieldValue("user_name", e.target.value);
+                      setRequestField("user_name", e.target.value);
+                    }}
                   />
                 </div>
                 <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
@@ -150,11 +140,11 @@ const Signup = () => {
                     type="phoneNo"
                     value={values?.phone_number?.replace(/[^0-9]/g, "")}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      form.setFieldValue("phone_number", e.target.value);
                       setRequestField(
                         "phone_number",
                         e.target.value?.replace(/[^0-9]/g, ""),
                       );
-                      handleFieldChange();
                     }}
                     placeholder="Phone Number"
                   />
@@ -179,8 +169,8 @@ const Signup = () => {
                       },
                     ]}
                     onChange={(e) => {
+                      form.setFieldValue("email", e.target.value);
                       setRequestField("email", e.target.value);
-                      handleFieldChange();
                     }}
                   />
                 </div>
@@ -204,8 +194,8 @@ const Signup = () => {
                       },
                     ]}
                     onChange={(value) => {
+                      form.setFieldValue("gender", value);
                       setRequestField("gender", value);
-                      handleFieldChange();
                     }}
                   />
                 </div>
@@ -236,8 +226,8 @@ const Signup = () => {
                       },
                     ]}
                     onChange={(e) => {
+                      form.setFieldValue("password", e.target.value);
                       setRequestField("password", e.target.value);
-                      handleFieldChange();
                     }}
                   />
                 </div>
@@ -269,8 +259,8 @@ const Signup = () => {
                       }),
                     ]}
                     onChange={(e) => {
+                      form.setFieldValue("confirm_password", e.target.value);
                       setRequestField("confirm_password", e.target.value);
-                      handleFieldChange();
                     }}
                   />
                 </div>
@@ -280,8 +270,8 @@ const Signup = () => {
                 label={<p className="text-base">Bio</p>}
                 placeholder="Enter Bio"
                 onChange={(e: any) => {
+                  form.setFieldValue("bio", e.target.value);
                   setRequestField("bio", e.target.value);
-                  handleFieldChange();
                 }}
                 name="bio"
               />
@@ -292,7 +282,14 @@ const Signup = () => {
                   bgVariant="primary"
                   className="!w-full"
                   loading={postAuthResponse.isLoading}
-                  disabled={!isFormValid}
+                  disabled={
+                    !state.request?.email ||
+                    !state.request?.password ||
+                    !state.request?.first_name ||
+                    !state.request?.last_name ||
+                    !state.request?.user_name ||
+                    !state.request?.phone_number || !state.request?.gender || !state.request?.confirm_password
+                  }
                 />
                 <p className="italic mt-2">
                   If you already have an account, Please{" "}

@@ -11,7 +11,7 @@ export const useNotify = () => {
 
   const Notify = (message: string, isSuccess: boolean, duration?: number) => {
     notification.open({
-      message: undefined,
+      title: undefined,
       placement: "top",
       className: `${!isSuccess ? "!text-red !border-red " : "!text-green !border-green"} !bg-white !rounded-lg  !border`,
       description: (
