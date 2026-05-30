@@ -122,7 +122,7 @@ export const useAuth = () => {
         ...state,
         url: endpoints.auth.login,
         request: {
-          username: state.request.username,
+          email: state.request.email,
           password: state.request.password,
         },
       });

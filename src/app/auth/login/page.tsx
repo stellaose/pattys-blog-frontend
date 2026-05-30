@@ -2,17 +2,23 @@
 import { AuthLayout } from "#components/layouts";
 import React from "react";
 import { Form, Col, Row } from "antd";
-import { CustomInput } from "#/components/general";
-import { SubmitButton } from "#/components/general";
+import { CustomInput } from "#components/general";
+import { SubmitButton } from "#components/general";
 import { Logo, LoginImg } from "#assets/images";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useAuth, useFieldRequest } from "#/hooks";
+import { useAppSelector } from "#store/hook";
 
 const Login = () => {
   const router = useRouter();
+  const state = useAppSelector((state) => state.app);
+
+  const { onLogin, postAuthResponse } = useAuth();
+
+  const { setRequestField } = useFieldRequest();
 
   const [form] = Form.useForm();
-  const values = Form.useWatch([], form);
 
   return (
     <>
@@ -35,7 +41,7 @@ const Login = () => {
               layout="vertical"
               autoComplete="off"
               form={form}
-              onFinish={() => router.push("/")}
+              onFinish={onLogin}
             >
               <Row
                 gutter={24}
@@ -57,7 +63,10 @@ const Login = () => {
                         message: "E-mail is required",
                       },
                     ]}
-                    onChange={(e) => console.log(e)}
+                    onChange={(e) => {
+                      form.setFieldValue("email", e.target.value);
+                      setRequestField("email", e.target.value);
+                    }}
                   />
                 </Col>
                 <Col span={24}>
@@ -65,7 +74,7 @@ const Login = () => {
                   <CustomInput
                     name="password"
                     type="password"
-                    placeholder="Password"
+                    placeholder="**********"
                     label={
                       <p className="text-base">
                         Password <span className="text-red">*</span>{" "}
@@ -77,7 +86,10 @@ const Login = () => {
                         message: "Password is required",
                       },
                     ]}
-                    onChange={(e) => console.log(e)}
+                    onChange={(e) => {
+                      form.setFieldValue("password", e.target.value);
+                      setRequestField("password", e.target.value);
+                    }}
                   />
                 </Col>
               </Row>
@@ -87,7 +99,8 @@ const Login = () => {
                   title="Log in"
                   bgVariant="secondary"
                   className="!w-full"
-                  disabled={!values?.email || !values?.password}
+                  loading={postAuthResponse.isLoading}
+                  disabled={!state.request?.email || !state.request?.password}
                 />
                 <div className="flex justify-between items-center">
                   <p

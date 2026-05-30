@@ -8,7 +8,7 @@ export const AppLayouts: React.FC<{ children: React.ReactNode }> = ({
   return (
     <>
       <Header />
-      <div>{children}</div>
+      <div className="min-h-screen">{children}</div>
       <Footer />
     </>
   );
