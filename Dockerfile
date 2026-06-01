@@ -31,6 +31,12 @@ COPY --from=deps /app/node_modules ./node_modules
 # ~ Copy the rest of the files from the present directory of the host machine to the home directory of the container
 COPY . .
 
+ARG NEXT_PUBLIC_BASE_URL
+ARG NEXT_PUBLIC_TOKEN
+
+ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
+ENV NEXT_PUBLIC_TOKEN=$NEXT_PUBLIC_TOKEN
+  
 # - Set to production before building 
 #  ~ Set environment variables in an .env file for sensitive data (recommended) or use the keyword ARGS (arguments) in Dockerfile 
 ENV NODE_ENV=production
