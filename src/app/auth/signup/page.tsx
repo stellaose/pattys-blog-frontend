@@ -8,18 +8,27 @@ import { CustomInput, CustomTextArea, Select } from "#components/general";
 import Image from "next/image";
 import { SubmitButton } from "#/components/general";
 import { useAuth, useFieldRequest } from "#/hooks";
-import { useAppSelector } from "#store/hook";
 import { useRouter } from "next/navigation";
 
 const Signup = () => {
   const router = useRouter();
 
-  const state = useAppSelector((state) => state.app);
 
   const [form] = Form.useForm();
   const values = Form.useWatch([], form);
 
   const { setRequestField } = useFieldRequest();
+
+
+  const isFormValid =
+    !values?.email ||
+    !values?.password ||
+    !values?.first_name ||
+    !values?.last_name ||
+    !values?.user_name ||
+    !values?.phone_number ||
+    !values?.gender ||
+    !values?.confirm_password;
 
   const { onSignup, postAuthResponse } = useAuth();
 
@@ -28,8 +37,6 @@ const Signup = () => {
       form.resetFields();
     }
   }, [postAuthResponse.isSuccess]);
-
- 
 
   return (
     <>
@@ -282,14 +289,7 @@ const Signup = () => {
                   bgVariant="primary"
                   className="!w-full"
                   loading={postAuthResponse.isLoading}
-                  disabled={
-                    !state.request?.email ||
-                    !state.request?.password ||
-                    !state.request?.first_name ||
-                    !state.request?.last_name ||
-                    !state.request?.user_name ||
-                    !state.request?.phone_number || !state.request?.gender || !state.request?.confirm_password
-                  }
+                  disabled={isFormValid}
                 />
                 <p className="italic mt-2">
                   If you already have an account, Please{" "}
