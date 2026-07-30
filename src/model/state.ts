@@ -7,5 +7,6 @@ export namespace State {
     url: string;
     isLoggedIn: boolean;
     userId: string;
+    user: any;
   }
 }

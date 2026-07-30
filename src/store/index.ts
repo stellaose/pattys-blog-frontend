@@ -13,14 +13,11 @@ import storage from "redux-persist/lib/storage";
 import { appReducer, setAppKey, setAllAppKeys } from "./slice/app";
 import {
   usePostAuthMutation,
-  useRefreshTokenMutation,
   useGetDataQuery,
   useGetDataConfigQuery,
   usePostDataMutation,
   usePatchDataMutation,
-  useGetJobConfigQuery,
   useDeleteDataMutation,
-  useUploadDocMutation,
 } from "./api";
 import { globalApi, authApi } from "#/store/api";
 
@@ -59,14 +56,11 @@ export {
   setAppKey,
   setAllAppKeys,
   usePostAuthMutation,
-  useRefreshTokenMutation,
   useGetDataQuery,
   useGetDataConfigQuery,
   usePostDataMutation,
   usePatchDataMutation,
   useDeleteDataMutation,
-  useGetJobConfigQuery,
-  useUploadDocMutation,
 };
 
 export const persistor = persistStore(store);

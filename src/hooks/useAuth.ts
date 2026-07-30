@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "#store/hook";
 import {
@@ -8,7 +7,7 @@ import {
   usePostDataMutation,
 } from "#/store";
 import { useNotify } from "#/components/general";
-import { endpoints, resendOtp } from "#/model/endpoints";
+import { endpoints } from "#/model/endpoints";
 import { useRouter } from "next/navigation";
 import { handleLogout } from "#/store/utils/logout";
 export const useAuth = () => {
@@ -56,8 +55,8 @@ export const useAuth = () => {
       } else {
         Notify(response?.error?.data?.message, false);
       }
-    } catch (error) {
-      Notify("Something went wrong. Please try later", false);
+    } catch (error: any) {
+      Notify(error?.message || "Something went wrong. Please try later", false);
     }
   }, [Notify, state, postAuth]);
 
@@ -87,8 +86,8 @@ export const useAuth = () => {
       } else {
         Notify(response?.error?.data?.message, false);
       }
-    } catch (error) {
-      Notify("Something went wrong. Please try later", false);
+    } catch (error: any) {
+      Notify(error?.message || "Something went wrong. Please try later", false);
     }
   }, [Notify, state, postAuth]);
 
@@ -97,7 +96,7 @@ export const useAuth = () => {
       try {
         const response: any = await postAuth({
           ...state,
-          url: resendOtp(userId),
+          url: endpoints.auth.resendOtp.replace(":userId", userId),
           request: {
             isSignupPasswordOtp: isOtp,
           },
@@ -109,8 +108,11 @@ export const useAuth = () => {
         } else {
           Notify(response?.error?.data?.message, false);
         }
-      } catch (error) {
-        Notify("Something went wrong. Please try later", false);
+      } catch (error: any) {
+        Notify(
+          error?.message || "Something went wrong. Please try later",
+          false,
+        );
       }
     },
     [Notify, state, postAuth],
@@ -127,14 +129,13 @@ export const useAuth = () => {
         },
       });
 
-      const user = response?.data?.data?.user;
       if (response && "data" in response) {
-        if ("data" in response.data) {
+        if ("user" in response.data) {
           Notify(response?.data?.message, true);
 
           sessionStorage.setItem(
             `${process.env.NEXT_PUBLIC_TOKEN}`,
-            response?.data?.data?.token,
+            response?.data?.token,
           );
           dispatch(
             setAllAppKeys({
@@ -142,14 +143,17 @@ export const useAuth = () => {
               request: undefined,
               isLoggedIn: true,
               userId: response?.data?.user?.userId,
+              user: response?.data?.user,
             }),
           );
+
+          router.push("/");
         }
       } else {
         Notify(response?.error?.data?.message, false);
       }
-    } catch (error) {
-      Notify("Something went wrong. Please try later", false);
+    } catch (error: any) {
+      Notify(error?.message || "Something went wrong. Please try later", false);
     }
   }, [Notify, state, postAuth]);
 
@@ -183,8 +187,11 @@ export const useAuth = () => {
         } else {
           Notify(response?.error?.data?.message, false);
         }
-      } catch (error) {
-        Notify("Something went wrong. Please try later", false);
+      } catch (error: any) {
+        Notify(
+          error?.message || "Something went wrong. Please try later",
+          false,
+        );
       }
     },
     [Notify, state, postAuth],
@@ -208,8 +215,11 @@ export const useAuth = () => {
         } else {
           Notify(response?.error?.data?.message, false);
         }
-      } catch (error) {
-        Notify("Something went wrong. Please try later", false);
+      } catch (error: any) {
+        Notify(
+          error?.message || "Something went wrong. Please try later",
+          false,
+        );
       }
     },
     [Notify, state, postData, router],
@@ -242,17 +252,33 @@ export const useAuth = () => {
         } else {
           Notify(response?.error?.data?.message, false);
         }
-      } catch (error) {
-        Notify("Something went wrong. Please try later", false);
+      } catch (error: any) {
+        Notify(
+          error?.message || "Something went wrong. Please try later",
+          false,
+        );
       }
     },
     [Notify, state, postData],
   );
 
   const onLogout = useCallback(async () => {
-    sessionStorage.clear();
-    handleLogout();
-  }, []);
+    try {
+      const response: any = await postData({
+        ...state,
+        postUrl: endpoints.auth.logout,
+      });
+
+      if (response && "data" in response) {
+        sessionStorage.clear();
+        handleLogout();
+      } else {
+        Notify(response?.error?.data?.message, false);
+      }
+    } catch (error: any) {
+      Notify(error?.message || "Something went wrong. Please try later", false);
+    }
+  }, [postData]);
 
   return {
     onSignup,

@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+import { useEffect } from "react";
 import { AuthLayout } from "#components/layouts";
 import React from "react";
 import { Form, Col, Row } from "antd";
@@ -19,6 +21,12 @@ const Login = () => {
   const { setRequestField } = useFieldRequest();
 
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (postAuthResponse.isSuccess) {
+      form.resetFields();
+    }
+  }, [postAuthResponse.isSuccess]);
 
   return (
     <>

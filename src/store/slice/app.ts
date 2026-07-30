@@ -8,6 +8,7 @@ const initialState: State.App = {
   url: "",
   isLoggedIn: false,
   userId: "",
+  user: undefined,
 };
 
 const AppSlice = createSlice({
