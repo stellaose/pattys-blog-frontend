@@ -24,6 +24,11 @@ export const getThemeConfig = (): ThemeConfig | undefined => {
       Form: {
         fontFamily: "Epilogue",
       },
+      Dropdown: {
+        controlItemBgActive: "#DBE1C1",
+        controlItemBgHover: "#DBE1C1",
+        
+      },
     },
   };
 };

@@ -1,13 +1,16 @@
 export const endpoints = {
   auth: {
-    signup: "/user/auth/signup",
-    login: "/user/auth/login",
-    forgotPassword: "/user/auth/forgot-password",
-    verifyOtp: "/user/auth/verify-email",
-    changePassword: "/user/auth/change-password",
-    logout: "/user/auth/logout",
-    resetPassword: "/user/auth/resetpassword",
+    signup: "/auth/signup",
+    login: "/auth/login",
+    forgotPassword: "/auth/forgot-password",
+    verifyOtp: "/auth/verify-email",
+    changePassword: "/auth/change-password",
+    logout: "/auth/logout",
+    resetPassword: "/auth/resetpassword",
+    resendOtp: "/auth/resend-otp/:userId",
+    logoutAll: "/auth/logout",
+  },
+  user: {
+    profile: "/auth/my-profile",
   },
 };
-
-export const resendOtp = (userId: string) => `/user/auth/resend-otp/${userId}`;

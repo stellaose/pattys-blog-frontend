@@ -8,9 +8,7 @@ type BaseQueryType = ReturnType<typeof fetchBaseQuery>;
 
 export const baseQuery = fetchBaseQuery({
   baseUrl,
-  prepareHeaders: (headers, { endpoint }) => {
-    if (endpoint === "getJobConfig" || endpoint === "uploadDoc") return headers;
-
+  prepareHeaders: (headers) => {
     if (typeof window !== "undefined") {
       const token = sessionStorage.getItem(`${process.env.NEXT_PUBLIC_TOKEN}`);
       if (token) {
@@ -34,15 +32,6 @@ export const authApi = createApi({
         };
       },
     }),
-    refreshToken: builder.mutation({
-      query: () => ({
-        url: "/auth/refreshtoken",
-        method: "GET",
-        headers: {
-          Authorization: `Bearer: ${process.env.NEXT_PUBLIC_TOKEN}`,
-        },
-      }),
-    }),
   }),
 });
 
@@ -52,13 +41,9 @@ export const baseQueryWithReauth =
     const result = await baseQuery(args, api, extraOptions);
 
     const status = result?.error?.status;
-    const errorData: any = result?.error?.data;
 
-    const isTokenExpired =
-      status === 401 ||
-      (status === 500 && errorData?.data?.name === "TokenExpiredError") ||
-      (status === 500 && errorData?.data?.name === "JsonWebTokenError");
-    // NotifySessionExpired();
+    const isTokenExpired = status === 401;
+
     if (isTokenExpired) {
       handleLogout();
 
@@ -97,16 +82,6 @@ export const globalApi = createApi({
       }),
       providesTags: ["GetData"],
     }),
-    getJobConfig: builder.query({
-      query: (data: any) => ({
-        url: data.getUrl,
-        params: data.params,
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DEFAULT_TOKEN}`,
-        },
-        meta: { skipAuth: true },
-      }),
-    }),
     postData: builder.mutation({
       query: (data: any) => ({
         url: data.postUrl,
@@ -127,17 +102,6 @@ export const globalApi = createApi({
         },
       }),
     }),
-    uploadDoc: builder.mutation({
-      query: (data: any) => ({
-        url: data.postUrl,
-        method: FORM_METHODS.POST,
-        body: data.request,
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_DEFAULT_TOKEN}`,
-        },
-        meta: { skipAuth: true },
-      }),
-    }),
     deleteData: builder.mutation({
       query: (data: any) => ({
         url: data.deleteUrl,
@@ -152,13 +116,11 @@ export const globalApi = createApi({
   }),
 });
 
-export const { usePostAuthMutation, useRefreshTokenMutation } = authApi;
+export const { usePostAuthMutation } = authApi;
 export const {
   useGetDataQuery,
   useGetDataConfigQuery,
-  useGetJobConfigQuery,
   usePostDataMutation,
   usePatchDataMutation,
   useDeleteDataMutation,
-  useUploadDocMutation,
 } = globalApi;

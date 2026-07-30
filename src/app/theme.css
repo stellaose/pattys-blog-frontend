@@ -15,6 +15,18 @@
   --color-grey-icon: #969191;
   --color-orange-disabled: #ed9e7f;
   --color-lemon-disabled: #cdda95;
+  
+  --color-lemon-100: #DBE1C1;
+
+  --color-blue-50: #e0ffff;
+  --color-blue-100: #add8e6;
+
+  --color-pink-100: #fee8f1;
+  --color-pink-200: #fff8f4;
+  --color-pink-150: #ffc0cb;
+  --color-pink-250: #ffe4e1;
+  --color-pink-300: #ffbbed;
+  --color-pink-400: #f4f6fa;
 
   /* text */
   --text-xsm: 8px;
