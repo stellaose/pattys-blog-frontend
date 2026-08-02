@@ -61,24 +61,45 @@ jobs:
     if: ( github.ref == 'refs/heads/main' && github.event_name == 'push') 
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.0.0
+
+      # appleboy/ssh-action (drone-ssh) was flaking with "dial tcp ***:22: i/o timeout"
+      # with no built-in retry. This replaces it with a native ssh call, a longer
+      # connect timeout, and a 5-attempt retry loop, so a single dropped connection
+      # doesn't fail the whole deploy.
       - name: Deploy to GCP server
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            echo ${{ secrets.GH_PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_ACTOR: ${{ github.actor }}
+          IMAGE: ghcr.io/${{ github.repository }}:latest
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SERVER_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
 
-            docker pull ghcr.io/${{ github.repository }}:latest
+          MAX_ATTEMPTS=5
+          for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
+            echo "SSH attempt $attempt of $MAX_ATTEMPTS..."
+            if ssh -o ConnectTimeout=20 \
+                    -o ConnectionAttempts=3 \
+                    -o StrictHostKeyChecking=no \
+                    -o UserKnownHostsFile=/dev/null \
+                    -i ~/.ssh/deploy_key \
+                    "$SERVER_USER@$SERVER_HOST" \
+                    "GH_PAT='$GH_PAT' GH_ACTOR='$GH_ACTOR' IMAGE='$IMAGE' bash -s" < .github/scripts/remote-deploy.sh; then
+              echo "Deploy succeeded on attempt $attempt"
+              exit 0
+            fi
+            echo "Attempt $attempt failed."
+            if [ "$attempt" -lt "$MAX_ATTEMPTS" ]; then
+              echo "Retrying in 15s..."
+              sleep 15
+            fi
+          done
 
-            docker stop my-next-app || true
-            docker rm my-next-app || true
-            docker ps -a | grep my-next-app || echo "Old container removed"
-            docker run -d \
-              --name my-next-app \
-              --restart always \
-              -p 3015:3015 \
-              ghcr.io/${{ github.repository }}:latest
-
-            docker image prune -f
+          echo "All $MAX_ATTEMPTS attempts failed to connect to $SERVER_HOST."
+          exit 1
