@@ -5,6 +5,7 @@ import {
   setAllAppKeys,
   usePostAuthMutation,
   usePostDataMutation,
+  usePutDataMutation,
 } from "#/store";
 import { useNotify } from "#/components/general";
 import { endpoints } from "#/model/endpoints";
@@ -17,6 +18,7 @@ export const useAuth = () => {
   const { Notify } = useNotify();
   const router = useRouter();
   const [postAuth, postAuthResponse] = usePostAuthMutation();
+  const [putData, putResponse] = usePutDataMutation();
 
   const [postData, postResponse] = usePostDataMutation();
 
@@ -41,12 +43,12 @@ export const useAuth = () => {
         if ("user" in response.data) {
           Notify(response?.data?.message, true);
           sessionStorage.setItem("email", state.request.email ?? "");
-          sessionStorage.setItem("userId", response?.data?.user?.userId ?? "");
 
           dispatch(
             setAllAppKeys({
               ...state,
               request: undefined,
+              userId: response?.data?.user?.userId,
             }),
           );
 
@@ -92,18 +94,24 @@ export const useAuth = () => {
   }, [Notify, state, postAuth]);
 
   const onResendOtp = useCallback(
-    async (userId: string, isOtp: boolean) => {
+    async (userId: string, payload: any) => {
       try {
         const response: any = await postAuth({
           ...state,
           url: endpoints.auth.resendOtp.replace(":userId", userId),
-          request: {
-            isSignupPasswordOtp: isOtp,
-          },
+          request: payload,
         });
         if (response && "data" in response) {
-          if ("data" in response.data) {
+          if ("user" in response.data) {
+            console.log(response?.data?.message);
             Notify(response?.data?.message, true);
+
+            dispatch(
+              setAllAppKeys({
+                ...state,
+                request: undefined,
+              }),
+            );
           }
         } else {
           Notify(response?.error?.data?.message, false);
@@ -157,110 +165,127 @@ export const useAuth = () => {
     }
   }, [Notify, state, postAuth]);
 
-  const onForgotPassword = useCallback(
-    async (setVerificationModal?: any, setForgotModal?: any) => {
-      try {
-        const response: any = await postAuth({
-          ...state,
-          url: endpoints.auth.forgotPassword,
-          request: {
-            email: state.request.email,
-            ispasswordreset: true,
-          },
-        });
+  const onForgotPassword = useCallback(async () => {
+    try {
+      const response: any = await postAuth({
+        ...state,
+        url: endpoints.auth.forgotPassword,
+        request: {
+          email: state.request.email,
+        },
+      });
 
-        if (response && "data" in response) {
-          if ("data" in response.data) {
-            sessionStorage.setItem("email", state.request.email);
+      if (response && "data" in response) {
+        if ("data" in response.data) {
+          sessionStorage.setItem("email", state.request.email);
 
-            Notify(response?.data?.message, true);
-            setForgotModal(false);
-            setVerificationModal(true);
+          Notify(response?.data?.message, true);
 
-            dispatch(
-              setAllAppKeys({
-                ...state,
-                request: undefined,
-              }),
-            );
-          }
-        } else {
-          Notify(response?.error?.data?.message, false);
+          dispatch(
+            setAllAppKeys({
+              ...state,
+              userId: response?.data?.data?.userId,
+              isForgotPassword: true,
+              request: undefined,
+            }),
+          );
+
+          router.push("/auth/verify-otp");
         }
-      } catch (error: any) {
-        Notify(
-          error?.message || "Something went wrong. Please try later",
-          false,
-        );
+      } else {
+        Notify(response?.error?.data?.message, false);
       }
-    },
-    [Notify, state, postAuth],
-  );
+    } catch (error: any) {
+      Notify(error?.message || "Something went wrong. Please try later", false);
+    }
+  }, [Notify, state, postAuth]);
 
-  const changePassword = useCallback(
-    async (payload: object | any) => {
-      try {
-        const response: any = await postData({
-          ...state,
-          postUrl: endpoints.auth.changePassword,
-          request: payload,
-        });
+  const onVerifyForgotPasswordOTP = useCallback(async () => {
+    try {
+      const response: any = await postAuth({
+        ...state,
+        url: endpoints.auth.verifyForgotPasswordOtp,
+        request: {
+          userId: state.userId,
+          code: Number(state.request.code),
+        },
+      });
 
-        if (response && "data" in response) {
-          if ("data" in response?.data) {
-            Notify(response?.data?.message, true);
-
-            handleLogout();
-          }
-        } else {
-          Notify(response?.error?.data?.message, false);
+      if (response && "data" in response) {
+        if ("user" in response.data) {
+          Notify(response?.data?.message, true);
+          dispatch(
+            setAllAppKeys({
+              ...state,
+              request: undefined,
+              isForgotPassword: false,
+            }),
+          );
+          router.push("/auth/reset-password");
         }
-      } catch (error: any) {
-        Notify(
-          error?.message || "Something went wrong. Please try later",
-          false,
-        );
+      } else {
+        Notify(response?.error?.data?.message, false);
       }
-    },
-    [Notify, state, postData, router],
-  );
+    } catch (error: any) {
+      Notify(error?.message || "Something went wrong. Please try later", false);
+    }
+  }, [Notify, state, postAuth]);
 
-  const onResetPassword = useCallback(
-    async (setVerificationModal?: any) => {
-      try {
-        const response: any = await postData({
-          ...state,
-          postUrl: endpoints.auth.resetPassword,
-          request: {
-            password: state.request.password,
-            confirmpassword: state.request.confirmpassword,
-          },
-        });
+  const onChangePassword = useCallback(async () => {
+    try {
+      const response: any = await putData({
+        ...state,
+        postUrl: endpoints.auth.changePassword,
+        request: {
+          userId: state.userId,
+          password: state.request.password,
+        },
+      });
 
-        if (response && "data" in response) {
-          if ("data" in response.data) {
-            Notify(response?.data?.message, true);
-            sessionStorage.clear();
-            dispatch(
-              setAllAppKeys({
-                ...state,
-                request: undefined,
-              }),
-            );
-            setVerificationModal(false);
-          }
-        } else {
-          Notify(response?.error?.data?.message, false);
+      if (response && "data" in response) {
+        if ("data" in response?.data) {
+          Notify(response?.data?.message, true);
+
+          handleLogout();
         }
-      } catch (error: any) {
-        Notify(
-          error?.message || "Something went wrong. Please try later",
-          false,
-        );
+      } else {
+        Notify(response?.error?.data?.message, false);
       }
-    },
-    [Notify, state, postData],
-  );
+    } catch (error: any) {
+      Notify(error?.message || "Something went wrong. Please try later", false);
+    }
+  }, [Notify, state, putData, router]);
+
+  const onResetPassword = useCallback(async () => {
+    try {
+      const response: any = await postAuth({
+        ...state,
+        url: endpoints.auth.resetPassword,
+        request: {
+          userId: state.userId,
+          password: state.request.password,
+        },
+      });
+
+      if (response && "data" in response) {
+        if ("data" in response.data || "user" in response.data) {
+          Notify(response?.data?.message, true);
+          sessionStorage.clear();
+          dispatch(
+            setAllAppKeys({
+              ...state,
+              request: undefined,
+            }),
+          );
+          router.push("/auth/login");
+        }
+      } else {
+        Notify(response?.error?.data?.message, false);
+      }
+    } catch (error: any) {
+      Notify(error?.message || "Something went wrong. Please try later", false);
+    }
+  }, [Notify, state, postAuth]);
 
   const onLogout = useCallback(async () => {
     try {
@@ -286,10 +311,12 @@ export const useAuth = () => {
     onVerifyOTP,
     postAuthResponse,
     postResponse,
+    putResponse,
     onLogout,
     onForgotPassword,
-    changePassword,
+    onChangePassword,
     onResetPassword,
     onResendOtp,
+    onVerifyForgotPasswordOTP,
   };
 };

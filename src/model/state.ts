@@ -6,6 +6,7 @@ export namespace State {
     response: any;
     url: string;
     isLoggedIn: boolean;
+    isForgotPassword: boolean;
     userId: string;
     user: any;
   }

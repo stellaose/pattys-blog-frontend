@@ -1,16 +1,25 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { LayoutAuth } from "#components/layouts";
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Row, Col } from "antd";
 import { SubmitButton } from "#components/general";
-import { useRouter } from "next/navigation";
 import { CustomInput } from "#components/general";
+import { useAuth, useFieldRequest } from "#/hooks";
 
 const ForgotPassword = () => {
-  const router = useRouter();
+  const { onForgotPassword, postAuthResponse } = useAuth();
+
+  const { setRequestField } = useFieldRequest();
 
   const [form] = Form.useForm();
   const values = Form.useWatch([], form);
+
+  useEffect(() => {
+    if (postAuthResponse.isSuccess) {
+      form.resetFields();
+    }
+  }, [postAuthResponse.isSuccess]);
 
   return (
     <>
@@ -21,7 +30,7 @@ const ForgotPassword = () => {
           layout="vertical"
           autoComplete="off"
           form={form}
-          onFinish={() => router.push("/auth/verify-otp")}
+          onFinish={onForgotPassword}
         >
           <div className="lg:w-3/4 ssm:w-4/5 w-9/10 mx-auto">
             <Row
@@ -44,7 +53,10 @@ const ForgotPassword = () => {
                       message: "E-mail is required",
                     },
                   ]}
-                  onChange={(e) => console.log(e)}
+                  onChange={(e) => {
+                    form.setFieldValue("email", e.target.value);
+                    setRequestField("email", e.target.value);
+                  }}
                 />
               </Col>
             </Row>
@@ -54,7 +66,8 @@ const ForgotPassword = () => {
                 title="Send OTP"
                 bgVariant="secondary"
                 className="!w-full"
-                disabled={!values?.email || !values?.password}
+                loading={postAuthResponse.isLoading}
+                disabled={!values?.email}
               />
             </div>
           </div>

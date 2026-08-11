@@ -4,31 +4,41 @@
 import { LayoutAuth } from "#components/layouts";
 import React, { useEffect, useState } from "react";
 import { SubmitButton } from "#/components/general";
-import { Form, Input, Button, Spin } from "antd";
+import { Form, Input, Button } from "antd";
 import { useAuth, useFieldRequest } from "#/hooks";
+import { useAppSelector } from "#store/hook";
 
 const VerifyOtp = () => {
+  const stateUserId = useAppSelector((state) => state.app.userId);
+  const isForgotPassword = useAppSelector(
+    (state) => state.app.isForgotPassword,
+  );
+  
+  
   const [form] = Form.useForm();
   const values = Form.useWatch([], form);
 
   const { setRequestField } = useFieldRequest();
 
   const { postAuthResponse, onResendOtp } = useAuth();
-  const { onVerifyOTP, postAuthResponse: verifyOTPResponse } = useAuth();
+  const {
+    onVerifyOTP,
+    onVerifyForgotPasswordOTP,
+    postAuthResponse: verifyOTPResponse,
+  } = useAuth();
 
   const [email, setEmail] = useState<string>("");
-  const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
     const storedEmail = sessionStorage.getItem("email") ?? "";
-    const storedUserId = sessionStorage.getItem("userId") ?? "";
 
     setEmail(storedEmail);
-    setUserId(storedUserId ?? "");
   }, []);
 
   const maskedEmail =
     email && email?.slice(0, 2) + "**************" + email?.slice(-2);
+
+ 
 
   useEffect(() => {
     if (postAuthResponse.isSuccess) {
@@ -53,7 +63,13 @@ const VerifyOtp = () => {
             layout="vertical"
             autoComplete="off"
             form={form}
-            onFinish={onVerifyOTP}
+            onFinish={() => {
+              if (isForgotPassword) {
+                onVerifyForgotPasswordOTP();
+              } else {
+                onVerifyOTP();
+              }
+            }}
           >
             <div className="lg:w-3/4 ssm:w-4/5 w-9/10 mx-auto mt-20">
               <Form.Item
@@ -87,12 +103,19 @@ const VerifyOtp = () => {
                 Didn’t received the code?{" "}
               </span>
               <Button
-                onClick={() => onResendOtp(userId, true)}
+                onClick={() =>
+                  onResendOtp(
+                    stateUserId,
+                    isForgotPassword
+                      ? { isForgotPasswordOtp: true }
+                      : { isSignupPasswordOtp: true },
+                  )
+                }
                 htmlType="button"
                 loading={postAuthResponse.isLoading}
                 className="!bg-white !py-1 !h-fit px-[15px]!  !border-black/60 !text-black/60 cursor-pointer !font-medium hover:!scale-105 transform transition duration-300 !rounded-2xl"
               >
-                {postAuthResponse.isLoading ? <Spin /> : "Resend"}
+              Resend
               </Button>
             </div>
           </Form>

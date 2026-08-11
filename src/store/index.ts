@@ -17,6 +17,7 @@ import {
   useGetDataConfigQuery,
   usePostDataMutation,
   usePatchDataMutation,
+  usePutDataMutation,
   useDeleteDataMutation,
 } from "./api";
 import { globalApi, authApi } from "#/store/api";
@@ -60,6 +61,7 @@ export {
   useGetDataConfigQuery,
   usePostDataMutation,
   usePatchDataMutation,
+  usePutDataMutation,
   useDeleteDataMutation,
 };
 
