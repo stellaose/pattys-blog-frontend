@@ -1,25 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { LayoutAuth } from "#/components/layouts";
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { Form, Col, Row } from "antd";
 import { CustomInput } from "#/components/general";
 import { SubmitButton } from "#/components/general";
 import { useAuth, useFieldRequest } from "#/hooks";
 
-const ChangePassword = () => {
-
-  const { onChangePassword, putResponse } = useAuth();
+const ResetPassword = () => {
+  const { onResetPassword, postAuthResponse } = useAuth();
 
   const { setRequestField } = useFieldRequest();
   const [form] = Form.useForm();
   const values = Form.useWatch([], form);
-  
-   useEffect(() => {
-      if (putResponse.isSuccess) {
-        form.resetFields();
-      }
-    }, [putResponse.isSuccess]);
+
+  useEffect(() => {
+    if (postAuthResponse.isSuccess) {
+      form.resetFields();
+    }
+  }, [postAuthResponse.isSuccess]);
 
   return (
     <>
@@ -30,7 +29,7 @@ const ChangePassword = () => {
           layout="vertical"
           autoComplete="off"
           form={form}
-          onFinish={onChangePassword}
+          onFinish={onResetPassword}
         >
           <div className="lg:w-3/4 ssm:w-4/5 w-9/10 mx-auto">
             <Row
@@ -93,7 +92,7 @@ const ChangePassword = () => {
                 title="Confirm"
                 bgVariant="secondary"
                 className="!w-full"
-                loading={putResponse.isLoading}
+                loading={postAuthResponse.isLoading}
                 disabled={!values?.confirm_password || !values?.password}
               />
             </div>
@@ -104,4 +103,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ResetPassword;

@@ -9,6 +9,7 @@ export const handleLogout = () => {
       response: undefined,
       url: "",
       isLoggedIn: false,
+      isForgotPassword: false,
       userId: "",
       user:undefined
     }),

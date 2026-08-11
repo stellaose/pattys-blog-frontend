@@ -65,9 +65,6 @@ export const globalApi = createApi({
       query: (data: any) => {
         return {
           url: data.getUrl,
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
         };
       },
       providesTags: ["GetData"],
@@ -76,9 +73,6 @@ export const globalApi = createApi({
       query: (data: any) => ({
         url: data.getUrl,
         params: data.params,
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-        },
       }),
       providesTags: ["GetData"],
     }),
@@ -87,9 +81,7 @@ export const globalApi = createApi({
         url: data.postUrl,
         method: FORM_METHODS.POST,
         body: data.request,
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-        },
+       
       }),
     }),
     patchData: builder.mutation({
@@ -97,9 +89,15 @@ export const globalApi = createApi({
         url: data.patchUrl,
         method: FORM_METHODS.PATCH,
         body: data.request,
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-        },
+       
+      }),
+    }),
+    putData: builder.mutation({
+      query: (data: any) => ({
+        url: data.putUrl,
+        method: FORM_METHODS.PUT,
+        body: data.request,
+       
       }),
     }),
     deleteData: builder.mutation({
@@ -107,9 +105,6 @@ export const globalApi = createApi({
         url: data.deleteUrl,
         body: data.request,
         method: FORM_METHODS.DELETE,
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-        },
       }),
       invalidatesTags: ["GetData"],
     }),
@@ -122,5 +117,6 @@ export const {
   useGetDataConfigQuery,
   usePostDataMutation,
   usePatchDataMutation,
+  usePutDataMutation,
   useDeleteDataMutation,
 } = globalApi;

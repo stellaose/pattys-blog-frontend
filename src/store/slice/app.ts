@@ -7,6 +7,7 @@ const initialState: State.App = {
   response: undefined,
   url: "",
   isLoggedIn: false,
+  isForgotPassword: false,
   userId: "",
   user: undefined,
 };
