@@ -6,8 +6,6 @@ import React from "react";
 import { Form, Col, Row } from "antd";
 import { CustomInput } from "#components/general";
 import { SubmitButton } from "#components/general";
-import { Logo, LoginImg } from "#assets/images";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth, useFieldRequest } from "#/hooks";
 import { useAppSelector } from "#store/hook";
@@ -30,19 +28,9 @@ const Login = () => {
 
   return (
     <>
-      <AuthLayout image={LoginImg}>
+      <AuthLayout>
         <>
           <div className="2lg:w-9/10 xxl:w-4/5 md:w-3/4 sm:w-4/5 w-9/10 !mx-auto h-full flex flex-col justify-center ">
-            <div className="flex flex-col justify-center items-center pt-[56px] gap-y-5">
-              <Image
-                src={Logo}
-                alt=""
-                className="h-[50px] w-auto"
-                loading="eager"
-              />
-              <p>Welcome back!</p>
-            </div>
-
             <Form
               className="!mt-20 flex flex-col gap-y-8"
               requiredMark={false}
