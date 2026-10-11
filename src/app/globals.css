@@ -36,10 +36,74 @@
   font-style: normal;
 }
 
-*,
+@font-face {
+  font-family: "Lora";
+  src: url("../assets/fonts/Lora/Lora-Regular.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../assets/fonts/Lora/Lora-Italic.ttf");
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../assets/fonts/Lora/Lora-Medium.ttf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../assets/fonts/Lora/Lora-MediumItalic.ttf");
+  font-style: italic;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../assets/fonts/Lora/Lora-SemiBold.ttf");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../assets/fonts/Lora/Lora-SemiBoldItalic.ttf");
+  font-style: italic;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../assets/fonts/Lora/Lora-Bold.ttf");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../assets/fonts/Lora/Lora-BoldItalic.ttf");
+  font-style: italic;
+  font-weight: 700;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Lora", serif;
+}
+
 .ant-form,
 .ant-input::placeholder {
-  font-family: "Epilogue";
+  font-family: Arial, sans-serif;
 }
 
 .ant-input-outlined,
@@ -76,4 +140,18 @@
 .ant-otp .ant-otp-input-wrapper .ant-otp-mask-input.ant-input-outlined {
   border: 1px solid var(--color-orange-disabled);
   border-radius: 12px;
+}
+
+.auth {
+  background-image: url("../assets/images/auth-bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.form-bg {
+  background-image: url("../assets/images/signup-card.png");
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }

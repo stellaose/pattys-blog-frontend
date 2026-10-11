@@ -8,6 +8,7 @@ export const Loader = () => {
       {" "}
       <div className="h-[100vh] w-[100vw] flex flex-col justify-center items-center">
         <Image src={ImgLoader} alt="" className="m-auto" loading="eager" />
+        <p className="text-lg font-semibold">Loading</p>
       </div>
     </>
   );

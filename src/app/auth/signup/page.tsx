@@ -2,10 +2,8 @@
 "use client";
 import { AuthLayout } from "#components/layouts";
 import React, { useEffect } from "react";
-import { Logo, SignupImg } from "#assets/images";
 import { Form } from "antd";
 import { CustomInput, CustomTextArea, Select } from "#components/general";
-import Image from "next/image";
 import { SubmitButton } from "#/components/general";
 import { useAuth, useFieldRequest } from "#/hooks";
 import { useRouter } from "next/navigation";
@@ -13,12 +11,10 @@ import { useRouter } from "next/navigation";
 const Signup = () => {
   const router = useRouter();
 
-
   const [form] = Form.useForm();
   const values = Form.useWatch([], form);
 
   const { setRequestField } = useFieldRequest();
-
 
   const isFormValid =
     !values?.email ||
@@ -40,19 +36,9 @@ const Signup = () => {
 
   return (
     <>
-      <AuthLayout image={SignupImg}>
+      <AuthLayout>
         <>
           <div className="2lg:w-9/10 xxl:w-4/5 md:w-3/4 sm:w-4/5 w-9/10 !mx-auto pb-14">
-            <div className="flex flex-col justify-center items-center pt-[56px] gap-y-5">
-              <Image
-                src={Logo}
-                alt=""
-                className="h-[50px] w-auto"
-                loading="eager"
-              />
-              <p>Welcome to Pattys. This is going to be a fun ride! 😉</p>
-            </div>
-
             <Form
               className="!mt-20 flex flex-col gap-y-8"
               requiredMark={false}

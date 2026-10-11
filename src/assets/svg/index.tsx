@@ -5,3 +5,7 @@ export { default as Logout } from "./logout.svg";
 export { default as LinkedIn } from "./LinkedIn.svg";
 export { default as X } from "./X-Logo.svg";
 export { default as Instagram } from "./Logo-Instagram.svg";
+export { default as AuthImg } from "./auth-img.svg";
+export { default as Discover } from "./discover.svg";
+export { default as Connect } from "./connect.svg";
+export { default as Contribute } from "./contribute.svg";
