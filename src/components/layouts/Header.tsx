@@ -15,7 +15,7 @@ export const Header: React.FC<Props> = ({ user, isLoggedIn, onLogout }) => {
   const router = useRouter();
   return (
     <>
-      <div className="bg-white-100 rounded-xl shadow-md px-[30px] py-[9px] fixed left-0 right-0 top-[70px] w-full max-w-[1380px] mx-auto border border-black/11">
+      <div className="rounded-xl shadow-md px-[30px] py-[9px] fixed left-0 right-0 top-[70px] w-full max-w-[1380px] mx-auto border border-black/11">
         <div className="flex justify-between items-center">
           <Image src={Logo} alt="" className="h-12.5 w-auto" loading="eager" />
 

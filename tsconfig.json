@@ -53,9 +53,12 @@
       "#store/*": [
         "./src/store/*"
       ],
+      "#styles": [
+        "./src/styles"
+      ],
       "#utils/*": [
         "./src/utils/*"
-      ]
+      ],
     }
   },
   "include": [
