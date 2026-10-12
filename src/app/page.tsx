@@ -1,11 +1,14 @@
 "use client";
-import { AppLayouts } from "#components/layouts";
+import { AppLayouts, HomeLayout } from "#components/layouts";
+import { Stories } from "#components/elements";
 
 export default function Home() {
   return (
     <>
       <AppLayouts>
-        <div>Checking app here</div>
+        <HomeLayout>
+          <Stories />
+        </HomeLayout>
       </AppLayouts>
     </>
   );

@@ -155,7 +155,7 @@ export const useAuth = () => {
             }),
           );
 
-          router.push("/");
+          router.push("/dashboard");
         }
       } else {
         Notify(response?.error?.data?.message, false);

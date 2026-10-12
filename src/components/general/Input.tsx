@@ -27,7 +27,7 @@ export const CustomInput: React.FC<AppInputProps> = ({
   required = false,
   ...inputRest
 }) => {
-  const className = "!h-[60px] text-base";
+  const className = "!h-12.5 text-base";
 
   return (
     <Form.Item name={name} label={label} rules={rules} required={required}>
@@ -44,7 +44,7 @@ export const CustomInput: React.FC<AppInputProps> = ({
           <Image
             src={NigeriaFlag}
             alt=""
-            className="h-[48px] w-auto"
+            className="h-8 w-auto"
             loading="eager"
           />{" "}
           <Input
@@ -52,7 +52,7 @@ export const CustomInput: React.FC<AppInputProps> = ({
             required
             type="tel"
             maxLength={11}
-            className="!h-[60px] text-base"
+            className="!h-12.5 text-base"
             value={value}
             onChange={onChange}
           />

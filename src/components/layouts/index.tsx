@@ -3,3 +3,6 @@ export * from "./AuthLayout";
 export * from "./Footer";
 export * from "./Header";
 export * from "./LayoutAuth";
+export * from "./HomeLayout";
+export * from "./FeedLayout";
+export * from "./ProfileLayout";

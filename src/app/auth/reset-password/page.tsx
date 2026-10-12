@@ -1,18 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { LayoutAuth } from "#/components/layouts";
+import { LayoutAuth } from "#components/layouts";
 import React, { useEffect } from "react";
-import { Form, Col, Row } from "antd";
-import { CustomInput } from "#/components/general";
+import { Form } from "antd";
+import { CustomInput } from "#components/general";
 import { SubmitButton } from "#/components/general";
 import { useAuth, useFieldRequest } from "#/hooks";
+import { useRouter } from "next/navigation";
+import { IoLockClosedOutline } from "react-icons/io5";
+
+import { authLabel, otpFormLink } from "#/styles/auth";
+import {
+  confirmPasswordPlaceholder,
+  passwordPlaceholder,
+} from "#/utils/placeholder";
+import { confirmPasswordRule, passwordRule } from "#/utils/messages";
+import { AuthLinks, LockIcon } from "#components/elements";
 
 const ResetPassword = () => {
-  const { onResetPassword, postAuthResponse } = useAuth();
+  const router = useRouter();
 
-  const { setRequestField } = useFieldRequest();
   const [form] = Form.useForm();
   const values = Form.useWatch([], form);
+
+  const { setRequestField } = useFieldRequest();
+
+  const isFormValid = !values?.password || !values?.confirm_password;
+
+  const { onResetPassword, postAuthResponse } = useAuth();
 
   useEffect(() => {
     if (postAuthResponse.isSuccess) {
@@ -22,82 +37,77 @@ const ResetPassword = () => {
 
   return (
     <>
-      <LayoutAuth description="Reset your password">
-        <Form
-          className="!mt-20 "
-          requiredMark={false}
-          layout="vertical"
-          autoComplete="off"
-          form={form}
-          onFinish={onResetPassword}
-        >
-          <div className="lg:w-3/4 ssm:w-4/5 w-9/10 mx-auto">
-            <Row
-              gutter={24}
-              className="flex flex-col gap-y-2 justify-between items-center "
-            >
-              <Col span={24}>
-                <CustomInput
-                  name="password"
-                  label={
-                    <p className="text-base">
-                      Password <span className="text-red">*</span>{" "}
-                    </p>
-                  }
-                  type="password"
-                  placeholder="Password"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Password is required",
-                    },
-                  ]}
-                  onChange={(e) => {
-                    form.setFieldValue("password", e.target.value);
-                    setRequestField("password", e.target.value);
-                  }}
-                />
-              </Col>
-
-              <Col span={24}>
-                <CustomInput
-                  name="confirm_password"
-                  label={
-                    <p className="text-base">
-                      Confirm password <span className="text-red">*</span>{" "}
-                    </p>
-                  }
-                  type="password"
-                  placeholder="Confirm password"
-                  rules={[
-                    { required: true, message: "Confirm Password is required" },
-                    ({ getFieldValue }) => ({
-                      validator(_, value) {
-                        if (!value || getFieldValue("password") === value) {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject(
-                          new Error("Passwords do not match"),
-                        );
-                      },
-                    }),
-                  ]}
-                  onChange={(e) => console.log(e)}
-                />
-              </Col>
-            </Row>
-
-            <div className="pb-16 mt-10">
-              <SubmitButton
-                title="Confirm"
-                bgVariant="secondary"
-                className="!w-full"
-                loading={postAuthResponse.isLoading}
-                disabled={!values?.confirm_password || !values?.password}
+      <LayoutAuth
+        title="Create a new password"
+        description={[
+          "Your email has been verified.",
+          "Choose a new password to secure your account.",
+        ]}
+        icon={<LockIcon />}
+      >
+        <>
+          <Form
+            requiredMark={false}
+            layout="vertical"
+            autoComplete="off"
+            form={form}
+            onFinish={onResetPassword}
+          >
+            <div className="w-full mx-auto flex flex-col gap-y-4">
+              <CustomInput
+                name="password"
+                type="password"
+                placeholder={passwordPlaceholder}
+                label={
+                  <p className={authLabel}>
+                    New password <span className="text-red">*</span>{" "}
+                  </p>
+                }
+                prefix={<IoLockClosedOutline size={24} color="#77767D" />}
+                rules={passwordRule}
+                onChange={(e) => {
+                  form.setFieldValue("password", e.target.value);
+                  setRequestField("password", e.target.value);
+                }}
               />
+
+              <CustomInput
+                name="confirm_password"
+                type="password"
+                placeholder={confirmPasswordPlaceholder}
+                prefix={<IoLockClosedOutline size={24} color="#77767D" />}
+                label={
+                  <p className={authLabel}>
+                    Confirm password <span className="text-red">*</span>{" "}
+                  </p>
+                }
+                rules={confirmPasswordRule}
+                onChange={(e) => {
+                  form.setFieldValue("confirm_password", e.target.value);
+                  setRequestField("confirm_password", e.target.value);
+                }}
+              />
+
+              <div className="pt-10">
+                <SubmitButton
+                  title="Reset Password"
+                  bgVariant="secondary"
+                  className="!w-full !rounded-full"
+                  loading={postAuthResponse.isLoading}
+                  disabled={isFormValid}
+                />
+              </div>
             </div>
-          </div>
-        </Form>
+            <p
+              className={otpFormLink}
+              onClick={() => router.push("/auth/login")}
+            >
+              Back to login
+            </p>
+
+            <AuthLinks />
+          </Form>
+        </>
       </LayoutAuth>
     </>
   );

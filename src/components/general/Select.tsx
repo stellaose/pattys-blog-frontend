@@ -16,7 +16,7 @@ export const Select: React.FC<AppSelectProps> = ({
   label,
   ...selectRest
 }) => {
-  const className = "!h-[60px] text-base";
+  const className = "!h-12.5 text-base";
 
   return (
     <>

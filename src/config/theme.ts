@@ -5,7 +5,7 @@ export const getThemeConfig = (): ThemeConfig | undefined => {
     token: {
       colorPrimary: "#c5d86d",
       borderRadius: 5,
-      colorBorder: "#f9fafc",
+      colorBorder: "#dedde2",
     },
     components: {
       Input: {
@@ -31,4 +31,4 @@ export const getThemeConfig = (): ThemeConfig | undefined => {
       },
     },
   };
-};
+}
