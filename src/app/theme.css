@@ -12,10 +12,6 @@
   --color-yellow: #fbbc05;
   --color-warning: #f78e31;
   --color-grey-icon: #969191;
-  --color-orange-disabled: #ed9e7f;
-  --color-lemon-disabled: #cdda95;
-
-  --color-lemon-100: #dbe1c1;
 
   --color-black-100: #171717;
   --color-black-200: #151515;
@@ -25,6 +21,7 @@
 
   --color-grey-100: #77767d;
   --color-grey-200: #66656a;
+  --color-grey-300: #737278;
 
   --color-lilac-100: #eee8ff;
   --color-lilac-200: #c9baff;
@@ -38,7 +35,9 @@
 
   --color-purple-100: #8d7fe5;
   --color-purple-200: #5b4bd8;
+  --color-purple-300: #5f32bf;
 
+  --color-white: #ffffff;
   --color-white-100: #f8f5f2;
   --color-white-150: #dedde2;
   --color-white-200: #fbfaf8;
@@ -60,6 +59,7 @@
   --text-32: 32px;
   --text-36: 36px;
   --text-40: 40px;
+  --text-42: 42px;
   --text-48: 48px;
   --text-54: 54px;
   --text-56: 56px;
@@ -94,4 +94,5 @@
   --shadow-md: -4px 2px 5px 0px rgba(0, 0, 0, 0.24);
   --shadow-mmd: 0 0 10px rgba(0, 0, 0, 0.15);
   --shadow-input: 0 0 0 2px rgba(5, 145, 255, 0.1);
+  --shadow-btn: 6px 11px 19px 7px rgba(201, 186, 255, 0.87);
 }

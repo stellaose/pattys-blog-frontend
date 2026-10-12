@@ -36,7 +36,7 @@ export const CustomTextArea: React.FC<AppInputProps> = ({
         placeholder={placeholder}
         className={`${classNames} ${className}`}
         onChange={onChange}
-        rows={4}
+        rows={3}
       />
     </Form.Item>
   );

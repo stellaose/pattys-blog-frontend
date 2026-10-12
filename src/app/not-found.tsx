@@ -1,26 +1,48 @@
 "use client";
 import { AppLayouts } from "#components/layouts";
 import React from "react";
-import { Button } from "antd";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { MdOutlineError } from "react-icons/md";
+import { GoArrowLeft } from "react-icons/go";
+import { useAppSelector } from "#store/hook";
+import {
+  eyebrow,
+  notFoundBody,
+  notFoundCode,
+  outlineLink,
+  primaryLink,
+  sectionText,
+  sectionTitle,
+} from "#/styles/home";
+
 const NotFound = () => {
   const router = useRouter();
-  
+  const isLoggedIn = useAppSelector((state) => state.app.isLoggedIn);
+
   return (
     <AppLayouts>
-      <div className="h-[100vh] flex flex-col justify-center items-center">
-        <div className="items-center flex flex-col gap-y-3">
-          <MdOutlineError size={100} color="#969191" />
-          <p className="text-base font-medium">Oh no!</p>
-          <p className="text-base font-medium">You made a wrong turn</p>
-          <Button
-            htmlType="button"
+      <div className={notFoundBody}>
+        <p className={notFoundCode}>404</p>
+        <p className={eyebrow}>page not found</p>
+        <h1 className={sectionTitle}>
+          You made a wrong turn<span className="text-purple-200">.</span>
+        </h1>
+        <p className={`${sectionText} max-w-[420px]`}>
+          The page you are looking for does not exist or has been moved.
+        </p>
+        <div className="flex flex-wrap justify-center gap-4 mt-4">
+          <Link href={isLoggedIn ? "/dashboard" : "/"}>
+            <span className={primaryLink}>
+              {isLoggedIn ? "Back to dashboard" : "Back to home"}
+            </span>
+          </Link>
+          <button
+            type="button"
+            className={`${outlineLink} cursor-pointer`}
             onClick={() => router.back()}
-            className="!px-20 !h-12 !bg-grey-icon !border-grey-icon !text-white !text-base !font-bold transform transition duration-300 hover:scale-105"
           >
-            Go back!
-          </Button>
+            <GoArrowLeft size={16} /> Go back
+          </button>
         </div>
       </div>
     </AppLayouts>

@@ -6,7 +6,49 @@ import { Form } from "antd";
 import { CustomInput, CustomTextArea, Select } from "#components/general";
 import { SubmitButton } from "#/components/general";
 import { useAuth, useFieldRequest } from "#/hooks";
+import Line from "#assets/images/line.png";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { RiUser6Line } from "react-icons/ri";
+import { IoIosAt } from "react-icons/io";
+import { MdOutlineMailOutline } from "react-icons/md";
+import { HiOutlineUsers } from "react-icons/hi2";
+import { GoArrowRight } from "react-icons/go";
+import { IoLockClosedOutline } from "react-icons/io5";
+
+import {
+  authLabel,
+  authPhoneLabel,
+  inputText,
+  signupBody,
+  signupFormBody,
+  signupFormSubheading,
+  signupFormTitle,
+  signupTitleHeadline,
+} from "#/styles/auth";
+import {
+  bioPlaceholder,
+  confirmPasswordPlaceholder,
+  emailPlaceholder,
+  firstNamePlaceholder,
+  genderPlaceholder,
+  lastNamePlaceholder,
+  passwordPlaceholder,
+  phoneNumberPlaceholder,
+  userNamePlaceholder,
+} from "#/utils/placeholder";
+import {
+  confirmPasswordRule,
+  emailRule,
+  firstNameRule,
+  genderOptions,
+  genderRule,
+  lastNameRule,
+  passwordRule,
+  phoneNumberRule,
+  usernameRule,
+} from "#/utils/messages";
+import { PlatformLogin } from "#components/elements";
 
 const Signup = () => {
   const router = useRouter();
@@ -38,53 +80,53 @@ const Signup = () => {
     <>
       <AuthLayout>
         <>
-          <div className="2lg:w-9/10 xxl:w-4/5 md:w-3/4 sm:w-4/5 w-9/10 !mx-auto pb-14">
+          <div className={signupBody}>
             <Form
-              className="!mt-20 flex flex-col gap-y-8"
+              className="!mt-14 flex flex-col gap-y-4"
               requiredMark={false}
               layout="vertical"
               autoComplete="off"
               form={form}
               onFinish={onSignup}
             >
-              <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
-                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
+              <div className="mb-4">
+                <p className={signupFormTitle}>create account</p>
+                <h3 className={signupTitleHeadline}>Start your journey</h3>
+                <p className={signupFormSubheading}>
+                  Create your account to continue to PATTYS
+                </p>
+              </div>
+
+              <div className={signupFormBody}>
+                <div className={inputText}>
                   <CustomInput
                     name="first_name"
                     label={
-                      <p className="text-base">
+                      <p className={authLabel}>
                         First Name <span className="text-red">*</span>{" "}
                       </p>
                     }
-                    placeholder="First Name"
+                    placeholder={firstNamePlaceholder}
                     type="text"
-                    rules={[
-                      {
-                        required: true,
-                        message: "First Name is required",
-                      },
-                    ]}
+                    prefix={<RiUser6Line size={24} color="#77767D" />}
+                    rules={firstNameRule}
                     onChange={(e) => {
                       form.setFieldValue("first_name", e.target.value);
                       setRequestField("first_name", e.target.value);
                     }}
                   />
                 </div>
-                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
+                <div className={inputText}>
                   <CustomInput
                     name="last_name"
                     label={
-                      <p className="text-base">
+                      <p className={authLabel}>
                         Last Name <span className="text-red">*</span>{" "}
                       </p>
                     }
-                    placeholder="Last Name"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Last Name is required",
-                      },
-                    ]}
+                    placeholder={lastNamePlaceholder}
+                    prefix={<RiUser6Line size={24} color="#77767D" />}
+                    rules={lastNameRule}
                     onChange={(e) => {
                       form.setFieldValue("last_name", e.target.value);
                       setRequestField("last_name", e.target.value);
@@ -93,43 +135,33 @@ const Signup = () => {
                 </div>
               </div>
 
-              <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
-                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
+              <div className={signupFormBody}>
+                <div className={inputText}>
                   <CustomInput
                     name="user_name"
                     label={
-                      <p className="text-base">
+                      <p className={authLabel}>
                         Username <span className="text-red">*</span>{" "}
                       </p>
                     }
-                    placeholder="User Name"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Username is required",
-                      },
-                    ]}
+                    placeholder={userNamePlaceholder}
+                    prefix={<IoIosAt size={24} color="#77767D" />}
+                    rules={usernameRule}
                     onChange={(e) => {
                       form.setFieldValue("user_name", e.target.value);
                       setRequestField("user_name", e.target.value);
                     }}
                   />
                 </div>
-                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
+                <div className={inputText}>
                   <CustomInput
                     name="phone_number"
                     label={
-                      <p className="flex gap-1 items-center text-base">
+                      <p className={authPhoneLabel}>
                         Phone Number <span className="text-red">*</span>
                       </p>
                     }
-                    rules={[
-                      { required: true, message: "Phone number is required" },
-                      {
-                        pattern: new RegExp("[0]{1}[7-9]{1}[0-9]{9}"),
-                        message: "Phone number must start with 07 or 08 or 09",
-                      },
-                    ]}
+                    rules={phoneNumberRule}
                     type="phoneNo"
                     value={values?.phone_number?.replace(/[^0-9]/g, "")}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,53 +171,42 @@ const Signup = () => {
                         e.target.value?.replace(/[^0-9]/g, ""),
                       );
                     }}
-                    placeholder="Phone Number"
+                    placeholder={phoneNumberPlaceholder}
                   />
                 </div>
               </div>
 
-              <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
-                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
+              <div className={signupFormBody}>
+                <div className={inputText}>
                   <CustomInput
                     name="email"
                     label={
-                      <p className="text-base">
+                      <p className={authLabel}>
                         E-mail <span className="text-red">*</span>{" "}
                       </p>
                     }
                     type="email"
-                    placeholder="E-mail"
-                    rules={[
-                      {
-                        required: true,
-                        message: "E-mail is required",
-                      },
-                    ]}
+                    placeholder={emailPlaceholder}
+                    prefix={<MdOutlineMailOutline size={24} color="#77767D" />}
+                    rules={emailRule}
                     onChange={(e) => {
                       form.setFieldValue("email", e.target.value);
                       setRequestField("email", e.target.value);
                     }}
                   />
                 </div>
-                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
+                <div className={inputText}>
                   <Select
                     name="gender"
                     label={
-                      <p className="text-base">
+                      <p className={authLabel}>
                         Gender <span className="text-red">*</span>{" "}
                       </p>
                     }
-                    placeholder="Gender"
-                    options={[
-                      { label: "Male", value: "male" },
-                      { label: "Female", value: "female" },
-                    ]}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Last Name is required",
-                      },
-                    ]}
+                    prefix={<HiOutlineUsers size={24} color="#77767D" />}
+                    placeholder={genderPlaceholder}
+                    options={genderOptions}
+                    rules={genderRule}
                     onChange={(value) => {
                       form.setFieldValue("gender", value);
                       setRequestField("gender", value);
@@ -194,63 +215,38 @@ const Signup = () => {
                 </div>
               </div>
 
-              <div className="flex xl:flex-row 2lg:flex-col sm:flex-row flex-col justify-between items-center">
-                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
+              <div className={signupFormBody}>
+                <div className={inputText}>
                   <CustomInput
                     name="password"
                     type="password"
-                    placeholder="Password"
+                    placeholder={passwordPlaceholder}
                     label={
-                      <p className="text-base">
+                      <p className={authLabel}>
                         Password <span className="text-red">*</span>{" "}
                       </p>
                     }
-                    rules={[
-                      {
-                        required: true,
-                        message: "Password is required",
-                      },
-                      {
-                        pattern: new RegExp(
-                          "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-                        ),
-                        message:
-                          "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character",
-                      },
-                    ]}
+                    prefix={<IoLockClosedOutline size={24} color="#77767D" />}
+                    rules={passwordRule}
                     onChange={(e) => {
                       form.setFieldValue("password", e.target.value);
                       setRequestField("password", e.target.value);
                     }}
                   />
                 </div>
-                <div className="xl:w-12/25 2lg:w-full sm:w-12/25 w-full">
+                <div className={inputText}>
                   <CustomInput
                     name="confirm_password"
                     type="password"
-                    placeholder="Password"
+                    placeholder={confirmPasswordPlaceholder}
+                    prefix={<IoLockClosedOutline size={24} color="#77767D" />}
                     label={
-                      <p className="text-base">
+                      <p className={authLabel}>
                         Confirm password{" "}
                         <span className="text-red">*</span>{" "}
                       </p>
                     }
-                    rules={[
-                      {
-                        required: true,
-                        message: "Confirm password is required",
-                      },
-                      ({ getFieldValue }) => ({
-                        validator(_, value) {
-                          if (!value || getFieldValue("password") === value) {
-                            return Promise.resolve();
-                          }
-                          return Promise.reject(
-                            new Error("Passwords do not match"),
-                          );
-                        },
-                      }),
-                    ]}
+                    rules={confirmPasswordRule}
                     onChange={(e) => {
                       form.setFieldValue("confirm_password", e.target.value);
                       setRequestField("confirm_password", e.target.value);
@@ -260,8 +256,8 @@ const Signup = () => {
               </div>
 
               <CustomTextArea
-                label={<p className="text-base">Bio</p>}
-                placeholder="Enter Bio"
+                label={<p className={authLabel}>Bio</p>}
+                placeholder={bioPlaceholder}
                 onChange={(e: any) => {
                   form.setFieldValue("bio", e.target.value);
                   setRequestField("bio", e.target.value);
@@ -269,23 +265,47 @@ const Signup = () => {
                 name="bio"
               />
 
-              <div className="pb-10">
+              <div className="mt-4.75">
                 <SubmitButton
-                  title="Signup"
-                  bgVariant="primary"
+                  title="Create Account"
+                  bgVariant="secondary"
                   className="!w-full"
                   loading={postAuthResponse.isLoading}
                   disabled={isFormValid}
                 />
-                <p className="italic mt-2">
-                  If you already have an account, Please{" "}
-                  <span
-                    className="text-lemon font-medium cursor-pointer hover:underline"
-                    onClick={() => router.push("/auth/login")}
-                  >
-                    Login
-                  </span>
-                </p>
+                <div className="mt-[31.5px]">
+                  <div className="flex items-center justify-center w-full">
+                    <Image
+                      src={Line}
+                      alt="line"
+                      loading="eager"
+                      className="w-auto"
+                    />
+                    <p className="text-[10.5px] text-grey-100 flex-nowrap">
+                      or continue with
+                    </p>
+                    <Image
+                      src={Line}
+                      alt="line"
+                      loading="eager"
+                      className="w-auto"
+                    />
+                  </div>
+                  
+                  <div className="mt-[24.5px]">
+                    <PlatformLogin/>
+                  </div>
+
+                  <p className="text-grey-200 mt-11 flex items-center justify-center gap-2">
+                    Already have an account{" "}
+                    <span
+                      className="text-purple-200 font-medium cursor-pointer hover:underline flex items-center gap-2"
+                      onClick={() => router.push("/auth/login")}
+                    >
+                      Login <GoArrowRight color="#5b4bd8" size={16} />
+                    </span>
+                  </p>
+                </div>
               </div>
             </Form>
           </div>

@@ -13,5 +13,20 @@ export const endpoints = {
   },
   user: {
     profile: "/auth/my-profile",
+    updateProfile: "/auth/update-me",
+    updatePassword: "/auth/change-password/:userId",
+  },
+  blog: {
+    all: "/blog/all",
+    myBlogs: "/blog/my-blogs",
+    create: "/blog/create",
+    edit: "/blog/edit/:blogId",
+    likeStatus: "/blog/status/:blogId",
+    delete: "/blog/delete/:blogId",
+  },
+  review: {
+    all: "/review/:blogId",
+    create: "/review/:blogId",
+    delete: "/review/:reviewId",
   },
 };
