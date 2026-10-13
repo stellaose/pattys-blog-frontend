@@ -116,19 +116,19 @@ const VerifyOtp = () => {
             <div className="mt-[132px] flex justify-between items-center">
               <p
                 className={otpLayoutBottom}
-                onClick={() => handleRoute("terms-and-condition")}
+                onClick={() => handleRoute("/terms-and-conditions")}
               >
                 Terms and condition
               </p>
               <p
                 className={otpLayoutBottom}
-                onClick={() => handleRoute("support")}
+                onClick={() => handleRoute("/contact-us")}
               >
                 Support
               </p>
               <p
                 className={otpLayoutBottom}
-                onClick={() => handleRoute("privacy-policy")}
+                onClick={() => handleRoute("/privacy-policy")}
               >
                 Privacy Policy
               </p>

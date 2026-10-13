@@ -1,6 +1,12 @@
 import React from "react";
 import { Popconfirm, Skeleton } from "antd";
-import { GoComment, GoHeart, GoThumbsdown, GoTrash } from "react-icons/go";
+import {
+  GoComment,
+  GoHeart,
+  GoHeartFill,
+  GoThumbsdown,
+  GoTrash,
+} from "react-icons/go";
 import {
   profileBlogStat,
   profileBlogTitle,
@@ -12,20 +18,33 @@ import {
   profileSectionHead,
   profileSectionTitle,
 } from "#/styles/profile";
-import { eyebrow, sectionText, storyMeta, storyTag } from "#/styles/home";
+import {
+  eyebrow,
+  sectionText,
+  storyMeta,
+  storyTag,
+  storyAction,
+} from "#/styles/home";
+import { feedActionActive, feedActionLiked } from "#/styles/feed";
 import { formatBlogDate, getBlogExcerpt } from "#/utils/feed";
 import { CreateBlog } from "../Feed/CreateBlog";
 import { ProfileEmpty } from "./ProfileEmpty";
 
 type Props = {
   blogs: any[];
+  userId: string;
   isLoading: boolean;
+  onLike: (blog: any) => void;
+  onDislike: (blog: any) => void;
   onDelete: (blogId: string) => void;
 };
 
 export const ProfileBlogs: React.FC<Props> = ({
   blogs,
+  userId,
   isLoading,
+  onLike,
+  onDislike,
   onDelete,
 }) => {
   return (
@@ -70,12 +89,36 @@ export const ProfileBlogs: React.FC<Props> = ({
                 {getBlogExcerpt(blog.description, 160)}
               </p>
               <div className="flex items-center gap-5 border-t border-white-150 pt-4 mt-auto">
-                <span className={profileBlogStat}>
-                  <GoHeart size={18} /> {blog.likeNo ?? 0}
-                </span>
-                <span className={profileBlogStat}>
-                  <GoThumbsdown size={18} /> {blog.dislikeNo ?? 0}
-                </span>
+                <button
+                  type="button"
+                  aria-pressed={!!blog.likes?.includes(userId)}
+                  aria-label={
+                    blog.likes?.includes(userId) ? "Remove like" : "Like blog"
+                  }
+                  className={`${storyAction} ${blog.likes?.includes(userId) ? feedActionLiked : ""}`}
+                  onClick={() => onLike(blog)}
+                >
+                  {blog.likes?.includes(userId) ? (
+                    <GoHeartFill size={18} />
+                  ) : (
+                    <GoHeart size={18} />
+                  )}
+                  {blog.likeNo ?? 0}
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={!!blog.dislikes?.includes(userId)}
+                  aria-label={
+                    blog.dislikes?.includes(userId)
+                      ? "Remove dislike"
+                      : "Dislike blog"
+                  }
+                  className={`${storyAction} ${blog.dislikes?.includes(userId) ? feedActionActive : ""}`}
+                  onClick={() => onDislike(blog)}
+                >
+                  <GoThumbsdown size={18} />
+                  {blog.dislikeNo ?? 0}
+                </button>
                 <span className={profileBlogStat}>
                   <GoComment size={18} /> {blog.review?.length ?? 0}
                 </span>

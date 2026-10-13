@@ -3,21 +3,26 @@ import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "#store/hook";
 import {
   setAllAppKeys,
+  useDeleteDataMutation,
   usePatchDataMutation,
   usePutDataMutation,
 } from "#/store";
 import { globalApi } from "#/store/api";
 import { useNotify } from "#/components/general";
 import { endpoints } from "#/model/endpoints";
+import { useRouter } from "next/navigation";
+import { handleLogout } from "#/store/utils/logout";
 
 export const useProfile = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.app);
 
   const { Notify } = useNotify();
+  const router = useRouter();
 
   const [patchData, patchResponse] = usePatchDataMutation();
   const [putData, putResponse] = usePutDataMutation();
+  const [deleteData, deleteResponse] = useDeleteDataMutation();
 
   const onUpdateProfile = useCallback(async () => {
     try {
@@ -79,10 +84,31 @@ export const useProfile = () => {
     }
   }, [Notify, state, putData]);
 
+  const onDeleteAccount = useCallback(async () => {
+    try {
+      const response: any = await deleteData({
+        deleteUrl: endpoints.user.deleteAccount,
+      });
+
+      if (response && "data" in response) {
+        Notify(response?.data?.message, true);
+        handleLogout();
+        router.replace("/");
+        return true;
+      } else {
+        Notify(response?.error?.data?.message, false);
+      }
+    } catch (error: any) {
+      Notify(error?.message || "Something went wrong. Please try later", false);
+    }
+  }, [Notify, deleteData, router]);
+
   return {
     onUpdateProfile,
     onUpdatePassword,
+    onDeleteAccount,
     patchResponse,
     putResponse,
+    deleteResponse,
   };
 };

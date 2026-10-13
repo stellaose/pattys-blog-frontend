@@ -2,7 +2,9 @@ import React from "react";
 import Image from "next/image";
 import Logo from "#assets/images/logo.png";
 import Link from "next/link";
-import { Avatar, DropDownImg, Logout } from "#assets/svg";
+import { DropDownImg, Logout } from "#assets/svg";
+import { navAvatar } from "#/styles/profile";
+import { getInitials } from "#/utils/helper";
 import { Dropdown } from "antd";
 import { usePathname, useRouter } from "next/navigation";
 import { GoComment, GoHeart, GoHome, GoPencil } from "react-icons/go";
@@ -74,12 +76,9 @@ export const Header: React.FC<Props> = ({ user, isLoggedIn, onLogout }) => {
 
           {isLoggedIn ? (
             <div className="flex items-center gap-x-4.75">
-              <Image
-                src={Avatar}
-                alt=""
-                className="h-10 w-auto"
-                loading="eager"
-              />
+              <span className={navAvatar}>
+                {getInitials(user?.first_name, user?.last_name)}
+              </span>
               <div className="cursor-pointer">
                 <Dropdown
                   menu={{

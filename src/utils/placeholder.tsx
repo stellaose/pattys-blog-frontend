@@ -31,3 +31,11 @@ export const blogDescriptionPlaceholder = "Tell your story";
 export const currentPasswordPlaceholder = "Enter your current password";
 
 export const newPasswordPlaceholder = "Enter your new password";
+
+export const fullNamePlaceholder = "Enter your full name";
+
+export const contactTopicPlaceholder = "What is this about?";
+
+export const contactMessagePlaceholder = "How can we help?";
+
+export const deleteAccountPlaceholder = "Type your username to confirm";

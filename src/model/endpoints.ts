@@ -12,8 +12,10 @@ export const endpoints = {
     logoutAll: "/auth/logout",
   },
   user: {
-    profile: "/auth/my-profile",
-    updateProfile: "/auth/update-me",
+    profile: "/user/my-profile",
+    publicProfile: "/user/:userId",
+    updateProfile: "/user/update-me",
+    deleteAccount: "/user/delete-me",
     updatePassword: "/auth/change-password/:userId",
   },
   blog: {

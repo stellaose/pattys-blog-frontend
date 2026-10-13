@@ -1,6 +1,8 @@
 import React from "react";
 import { GoBook, GoComment, GoGear, GoHeart, GoPulse } from "react-icons/go";
 
+import { getAuthorName } from "./feed";
+
 // ! TABS
 export const profileTabs = [
   { label: "My blogs", href: "/profile/my-blogs", icon: <GoBook size={18} /> },
@@ -23,6 +25,7 @@ export type ProfileComment = {
   reviewId: string;
   review: string;
   author: string;
+  authorName: string;
   blogId: string;
   blogTitle: string;
 };
@@ -53,6 +56,7 @@ export const getBlogComments = (blogs: any[]): ProfileComment[] =>
       reviewId: review.reviewId,
       review: review.review,
       author: review.author,
+      authorName: getAuthorName(review.authorDetails),
       blogId: blog.blogId,
       blogTitle: blog.title,
     })),

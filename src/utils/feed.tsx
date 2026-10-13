@@ -33,6 +33,27 @@ export const formatBlogDate = (date: string | undefined) => {
   });
 };
 
+export const getAuthorName = (authorDetails: any) => {
+  const name =
+    `${authorDetails?.first_name ?? ""} ${authorDetails?.last_name ?? ""}`.trim();
+  return name || "Pattys member";
+};
+
+export const getNextLikeStatus = (
+  blog: any,
+  userId: string,
+  clicked: "like" | "dislike",
+) => {
+  const current = clicked === "like" ? blog?.likes : blog?.dislikes;
+  return current?.includes(userId) ? "none" : clicked;
+};
+
+export const getUserProfileLink = (authorId: string | undefined) =>
+  authorId ? `/users/${authorId}` : "#";
+
+export const canDeleteReview = (blog: any, review: any, userId: string) =>
+  !!userId && (review?.author === userId || blog?.author === userId);
+
 export const getBlogExcerpt = (
   description: string[] | string | undefined,
   length = 220,

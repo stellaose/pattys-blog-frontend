@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { Skeleton } from "antd";
 import { GoComment, GoTrash } from "react-icons/go";
 import {
@@ -12,8 +13,9 @@ import {
   profileSection,
   profileSectionTitle,
 } from "#/styles/profile";
-import { eyebrow, storyMeta } from "#/styles/home";
+import { eyebrow, storyAuthorLink, storyMeta } from "#/styles/home";
 import { feedPanelTitle } from "#/styles/feed";
+import { getUserProfileLink } from "#/utils/feed";
 import { ProfileComment } from "#/utils/profile";
 
 type Props = {
@@ -41,7 +43,12 @@ const CommentList: React.FC<{
           </span>
           <div className="min-w-0 grow">
             <p className={profileRowText}>{comment.blogTitle}</p>
-            <p className={profileRowDetail}>{comment.review}</p>
+            <p className={profileRowDetail}>
+              <Link href={getUserProfileLink(comment.author)}>
+                <span className={storyAuthorLink}>{comment.authorName}</span>
+              </Link>{" "}
+              {comment.review}
+            </p>
           </div>
           {onDelete && (
             <button
@@ -81,6 +88,7 @@ export const ProfileComments: React.FC<Props> = ({
             <CommentList
               comments={received}
               emptyText="No one has commented on your blogs yet."
+              onDelete={onDelete}
             />
           )}
         </div>

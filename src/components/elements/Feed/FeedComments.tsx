@@ -1,9 +1,15 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import { Input, Spin } from "antd";
 import { GoTrash } from "react-icons/go";
 import { feedComment, feedComments } from "#/styles/feed";
-import { storyMeta } from "#/styles/home";
+import { storyAuthorLink, storyMeta } from "#/styles/home";
+import {
+  canDeleteReview,
+  getAuthorName,
+  getUserProfileLink,
+} from "#/utils/feed";
 import { commentPlaceholder } from "#/utils/placeholder";
 
 type Props = {
@@ -43,12 +49,14 @@ export const FeedComments: React.FC<Props> = ({
       {reviews.map((review: any) => (
         <div key={review.reviewId} className={feedComment}>
           <p>
-            <span className="font-bold">
-              {review.author === userId ? "You" : "Member"}
-            </span>{" "}
+            <Link href={getUserProfileLink(review.author)}>
+              <span className={storyAuthorLink}>
+                {getAuthorName(review.authorDetails)}
+              </span>
+            </Link>{" "}
             {review.review}
           </p>
-          {review.author === userId && (
+          {canDeleteReview(blog, review, userId) && (
             <button
               type="button"
               aria-label="Delete comment"

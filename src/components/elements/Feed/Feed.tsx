@@ -2,13 +2,12 @@
 import React, { useState } from "react";
 import { Pagination, Skeleton } from "antd";
 import { useAppSelector } from "#store/hook";
-import { useBlog, useGetBlogs, useReview } from "#/hooks";
+import { useGetBlogs } from "#/hooks";
 import { feedCard, feedStack } from "#/styles/feed";
 import { storyMeta } from "#/styles/home";
 import { feedPageSize, feedSortOptions } from "#/utils/feed";
-import { FeedCard } from "./FeedCard";
-import { FeedComments } from "./FeedComments";
 import { FeedEmpty } from "./FeedEmpty";
+import { FeedList } from "./FeedList";
 import { FeedToolbar } from "./FeedToolbar";
 
 export const Feed = () => {
@@ -18,18 +17,14 @@ export const Feed = () => {
   const [keyword, setKeyword] = useState("");
   const [sort, setSort] = useState(feedSortOptions[0].value);
   const [page, setPage] = useState(1);
-  const [openBlogIds, setOpenBlogIds] = useState<string[]>([]);
 
   const { blogs, pagination, isLoading } = useGetBlogs(state.isLoggedIn, {
-    category: category === "All" ? undefined : category,
+    category: category === "All" ? undefined : category.toLowerCase(),
     keyword: keyword || undefined,
     sort,
     page,
     limit: feedPageSize,
   });
-
-  const { onLikeDislikeBlog } = useBlog();
-  const { onCreateReview, onDeleteReview, postResponse } = useReview();
 
   const isFiltered = category !== "All" || !!keyword;
 
@@ -52,43 +47,19 @@ export const Feed = () => {
         }}
       />
 
-      <div className={feedStack}>
-        {isLoading ? (
-          [1, 2, 3].map((item) => (
+      {isLoading ? (
+        <div className={feedStack}>
+          {[1, 2, 3].map((item) => (
             <div key={item} className={feedCard}>
               <Skeleton active avatar paragraph={{ rows: 3 }} />
             </div>
-          ))
-        ) : blogs.length === 0 ? (
-          <FeedEmpty isFiltered={isFiltered} />
-        ) : (
-          blogs.map((blog: any) => (
-            <FeedCard
-              key={blog.blogId}
-              blog={blog}
-              userId={state.userId}
-              isCommentsOpen={openBlogIds.includes(blog.blogId)}
-              onLike={() => onLikeDislikeBlog(blog.blogId, "like")}
-              onDislike={() => onLikeDislikeBlog(blog.blogId, "dislike")}
-              onToggleComments={() =>
-                setOpenBlogIds(
-                  openBlogIds.includes(blog.blogId)
-                    ? openBlogIds.filter((id) => id !== blog.blogId)
-                    : [...openBlogIds, blog.blogId],
-                )
-              }
-            >
-              <FeedComments
-                blog={blog}
-                userId={state.userId}
-                loading={postResponse.isLoading}
-                onSubmit={(review) => onCreateReview(blog.blogId, review)}
-                onDelete={onDeleteReview}
-              />
-            </FeedCard>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      ) : blogs.length === 0 ? (
+        <FeedEmpty isFiltered={isFiltered} />
+      ) : (
+        <FeedList blogs={blogs} userId={state.userId} />
+      )}
 
       {!isLoading && pagination?.totalBlogs > 0 && (
         <p className={`${storyMeta} mt-6`}>

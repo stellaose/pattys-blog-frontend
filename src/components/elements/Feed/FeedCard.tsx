@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import {
   GoChevronDown,
   GoChevronUp,
@@ -19,11 +20,17 @@ import {
 import {
   storyAction,
   storyAuthor,
+  storyAuthorLink,
   storyAvatar,
   storyMeta,
   storyTag,
 } from "#/styles/home";
-import { formatBlogDate, getBlogExcerpt } from "#/utils/feed";
+import {
+  formatBlogDate,
+  getAuthorName,
+  getBlogExcerpt,
+  getUserProfileLink,
+} from "#/utils/feed";
 import { getInitials } from "#/utils/helper";
 
 type Props = {
@@ -46,9 +53,7 @@ export const FeedCard: React.FC<Props> = ({
   children,
 }) => {
   const author = blog?.authorDetails;
-  const authorName = author
-    ? `${author.first_name ?? ""} ${author.last_name ?? ""}`.trim()
-    : "Pattys member";
+  const authorName = getAuthorName(author);
   const commentCount = blog?.review?.length ?? 0;
   const isLiked = blog?.likes?.includes(userId);
   const isDisliked = blog?.dislikes?.includes(userId);
@@ -61,7 +66,9 @@ export const FeedCard: React.FC<Props> = ({
             {getInitials(author?.first_name, author?.last_name) || "P"}
           </span>
           <p className={storyMeta}>
-            <span className="font-bold text-black-200">{authorName}</span>
+            <Link href={getUserProfileLink(blog?.author)}>
+              <span className={storyAuthorLink}>{authorName}</span>
+            </Link>
             <br />
             {formatBlogDate(blog?.createdAt)}
           </p>
@@ -76,7 +83,7 @@ export const FeedCard: React.FC<Props> = ({
         <button
           type="button"
           aria-pressed={!!isLiked}
-          aria-label="Like blog"
+          aria-label={isLiked ? "Remove like" : "Like blog"}
           className={`${storyAction} ${isLiked ? feedActionLiked : ""}`}
           onClick={onLike}
         >
@@ -86,7 +93,7 @@ export const FeedCard: React.FC<Props> = ({
         <button
           type="button"
           aria-pressed={!!isDisliked}
-          aria-label="Dislike blog"
+          aria-label={isDisliked ? "Remove dislike" : "Dislike blog"}
           className={`${storyAction} ${isDisliked ? feedActionActive : ""}`}
           onClick={onDislike}
         >

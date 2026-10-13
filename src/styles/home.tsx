@@ -67,6 +67,9 @@ export const storyAuthor = "flex items-center gap-2.5";
 export const storyAvatar =
   "h-8 w-8 shrink-0 rounded-full bg-lilac-100 text-purple-200 text-xs font-arial font-bold flex items-center justify-center";
 
+export const storyAuthorLink =
+  "font-bold text-black-200 transition duration-300 hover:text-purple-200 hover:underline";
+
 export const storyActions =
   "flex items-center gap-4 border-t border-white-150 pt-4 mt-auto";
 
