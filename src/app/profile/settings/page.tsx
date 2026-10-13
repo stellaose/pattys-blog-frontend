@@ -1,7 +1,11 @@
 "use client";
 import React from "react";
 import { ProfileLayout } from "#components/layouts";
-import { ProfileInformation, ProfilePassword } from "#components/elements";
+import {
+  ProfileDelete,
+  ProfileInformation,
+  ProfilePassword,
+} from "#components/elements";
 import { useFieldRequest, useProfile } from "#/hooks";
 import { useAppSelector } from "#store/hook";
 import { eyebrow } from "#/styles/home";
@@ -15,8 +19,14 @@ const Settings = () => {
   const user = useAppSelector((state) => state.app.user);
 
   const { setRequestField } = useFieldRequest();
-  const { onUpdateProfile, onUpdatePassword, patchResponse, putResponse } =
-    useProfile();
+  const {
+    onUpdateProfile,
+    onUpdatePassword,
+    onDeleteAccount,
+    patchResponse,
+    putResponse,
+    deleteResponse,
+  } = useProfile();
 
   return (
     <>
@@ -41,6 +51,12 @@ const Settings = () => {
               onSubmit={onUpdatePassword}
             />
           </div>
+
+          <ProfileDelete
+            user={user}
+            loading={deleteResponse.isLoading}
+            onDelete={onDeleteAccount}
+          />
         </section>
       </ProfileLayout>
     </>

@@ -34,6 +34,17 @@ export const profileTabActive = "border-purple-200 text-purple-200";
 export const profileTabIdle =
   "border-transparent text-grey-200 hover:text-black-200";
 
+export const navAvatar =
+  "h-10 w-10 shrink-0 rounded-full bg-black-100 text-white text-sm font-lora font-bold uppercase flex items-center justify-center";
+
+export const userInfoRow =
+  "flex items-start justify-between gap-4 py-3 border-b border-white-150 last:border-b-0 last:pb-0 first:pt-0";
+
+export const userInfoLabel = "text-sm font-arial text-grey-200";
+
+export const userInfoValue =
+  "text-sm font-arial font-bold text-black-200 text-right capitalize";
+
 // ? Sections
 export const profileSection = "pt-8 flex flex-col gap-6";
 
@@ -80,3 +91,12 @@ export const profileFormRow =
   "flex sm:flex-row flex-col justify-between sm:items-start gap-y-4";
 
 export const profileFormField = "sm:w-12/25 w-full";
+
+export const profileDanger =
+  "bg-white border border-red/30 rounded-20 p-6 sm:p-8 flex sm:flex-row flex-col sm:items-center justify-between gap-6";
+
+export const profileDangerTitle =
+  "text-xs text-red font-bold uppercase font-arial mb-2";
+
+export const profileDangerButton =
+  "inline-flex items-center justify-center gap-2 h-13 px-7 rounded-lg border border-red text-red text-sm font-bold cursor-pointer shrink-0 transition transform duration-300 hover:scale-105 hover:bg-red hover:text-white";

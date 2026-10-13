@@ -7,3 +7,5 @@ export * from "./ProfileActivities";
 export * from "./ProfileInformation";
 export * from "./ProfilePassword";
 export * from "./ProfileLikes";
+export * from "./UserProfile";
+export * from "./ProfileDelete";

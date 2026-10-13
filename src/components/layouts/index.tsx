@@ -6,3 +6,4 @@ export * from "./LayoutAuth";
 export * from "./HomeLayout";
 export * from "./FeedLayout";
 export * from "./ProfileLayout";
+export * from "./InfoLayout";

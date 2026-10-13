@@ -39,5 +39,41 @@ export const useGetLoggedInUser = (isLoggedIn: boolean) => {
     }
   }, [data, error, isError, isLoggedIn, Notify]);
 
-  return { refetch, isLoading, data:data?.user };
+  return { refetch, isLoading, data: data?.user };
+};
+
+export const useGetUserProfile = (userId: string | undefined) => {
+  const { Notify } = useNotify();
+
+  const { data, isLoading, refetch, error, isError } = useGetDataQuery(
+    {
+      getUrl: endpoints.user.publicProfile.replace(":userId", userId ?? ""),
+    },
+    {
+      skip: !userId,
+    },
+  );
+
+  useEffect(() => {
+    if (!userId) return;
+
+    if (isError) {
+      const errorMessage =
+        (error as any)?.data?.message ||
+        (error as any)?.message ||
+        "Something went wrong while fetching this profile.";
+
+      if ("data" in error) {
+        Notify(errorMessage, false);
+      }
+    }
+  }, [error, isError, userId]);
+
+  return {
+    refetch,
+    isLoading,
+    isError,
+    user: data?.user,
+    blogs: data?.blogs ?? [],
+  };
 };

@@ -10,16 +10,16 @@ export const AuthLinks = () => {
     <div className="mt-16 flex justify-between items-center">
       <p
         className={otpLayoutBottom}
-        onClick={() => router.push("terms-and-condition")}
+        onClick={() => router.push("/terms-and-conditions")}
       >
         Terms and condition
       </p>
-      <p className={otpLayoutBottom} onClick={() => router.push("support")}>
+      <p className={otpLayoutBottom} onClick={() => router.push("/contact-us")}>
         Support
       </p>
       <p
         className={otpLayoutBottom}
-        onClick={() => router.push("privacy-policy")}
+        onClick={() => router.push("/privacy-policy")}
       >
         Privacy Policy
       </p>

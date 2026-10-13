@@ -16,9 +16,14 @@ import { getInitials } from "#/utils/helper";
 type Props = {
   user: any;
   stats: { blogs: number; likes: number; comments: number };
+  label?: string;
 };
 
-export const ProfileHeader: React.FC<Props> = ({ user, stats }) => {
+export const ProfileHeader: React.FC<Props> = ({
+  user,
+  stats,
+  label = "your profile",
+}) => {
   const items = [
     { label: "Blogs", value: stats.blogs },
     { label: "Likes", value: stats.likes },
@@ -33,7 +38,7 @@ export const ProfileHeader: React.FC<Props> = ({ user, stats }) => {
           {getInitials(user?.first_name, user?.last_name)}
         </span>
         <div className="flex flex-col gap-1">
-          <p className={eyebrow}>your profile</p>
+          <p className={eyebrow}>{label}</p>
           <h1 className={profileName}>
             {user?.first_name} {user?.last_name}
             <span className="text-purple-200">.</span>

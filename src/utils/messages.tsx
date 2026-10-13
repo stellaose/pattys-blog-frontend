@@ -111,3 +111,24 @@ export const currentPasswordRule = [
     message: "Current password is required",
   },
 ];
+
+export const fullNameRule = [
+  {
+    required: true,
+    message: "Your name is required",
+  },
+];
+
+export const contactTopicRule = [
+  {
+    required: true,
+    message: "Please choose a topic",
+  },
+];
+
+export const contactMessageRule = [
+  {
+    required: true,
+    message: "Message is required",
+  },
+];

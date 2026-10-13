@@ -20,7 +20,7 @@ export type BlogParams = {
   sort?: string;
 };
 
-export type LikeStatus = "like" | "dislike";
+export type LikeStatus = "like" | "dislike" | "none";
 
 export const useGetBlogs = (isLoggedIn: boolean, params?: BlogParams) => {
   const { Notify } = useNotify();
