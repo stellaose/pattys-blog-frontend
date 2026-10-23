@@ -26,6 +26,10 @@ export const endpoints = {
     likeStatus: "/blog/status/:blogId",
     delete: "/blog/delete/:blogId",
   },
+  contact: {
+    create: "/contact",
+    all: "/contact",
+  },
   review: {
     all: "/review/:blogId",
     create: "/review/:blogId",

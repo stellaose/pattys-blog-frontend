@@ -3,7 +3,7 @@ import { ThemeConfig } from "antd";
 export const getThemeConfig = (): ThemeConfig | undefined => {
   return {
     token: {
-      colorPrimary: "#c5d86d",
+      colorPrimary: "#5b4bd8",
       borderRadius: 5,
       colorBorder: "#dedde2",
     },
@@ -27,8 +27,7 @@ export const getThemeConfig = (): ThemeConfig | undefined => {
       Dropdown: {
         controlItemBgActive: "#DBE1C1",
         controlItemBgHover: "#DBE1C1",
-        
       },
     },
   };
-}
+};

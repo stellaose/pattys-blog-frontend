@@ -11,16 +11,7 @@ import {
 import { globalApi } from "#/store/api";
 import { useNotify } from "#/components/general";
 import { endpoints } from "#/model/endpoints";
-
-export type BlogParams = {
-  keyword?: string;
-  category?: string;
-  page?: number;
-  limit?: number;
-  sort?: string;
-};
-
-export type LikeStatus = "like" | "dislike" | "none";
+import { BlogParams, LikeStatus } from "#services/types";
 
 export const useGetBlogs = (isLoggedIn: boolean, params?: BlogParams) => {
   const { Notify } = useNotify();

@@ -85,13 +85,13 @@ const VerifyOtp = () => {
               </div>
             </div>
             <div className="flex flex-col justify-center items-center mt-11.75">
-              <p className="text-grey-300 font-arial text-base">
-                Didn’t receive it?{" "}
+              <div className="text-grey-300 font-arial text-base">
+                <p>Didn’t receive it? </p>
                 {postAuthResponse.isLoading ? (
                   <Spin />
                 ) : (
                   <span
-                    className="font-bold text-black-100 underline cursor-pointer"
+                    className="font-bold text-black-100 underline cursor-pointer text-base font-arial"
                     onClick={() =>
                       onResendOtp(
                         stateUserId,
@@ -104,7 +104,7 @@ const VerifyOtp = () => {
                     Resend Code
                   </span>
                 )}
-              </p>
+              </div>
             </div>
             <p
               className="text-base font-bold text-black-100 text-center mt-11.75 underline cursor-pointer"

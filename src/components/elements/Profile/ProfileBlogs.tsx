@@ -1,5 +1,6 @@
 import React from "react";
-import { Popconfirm, Skeleton } from "antd";
+import { SkeletonLoader } from "#components/general";
+import { Popconfirm } from "antd";
 import {
   GoComment,
   GoHeart,
@@ -58,13 +59,11 @@ export const ProfileBlogs: React.FC<Props> = ({
       </div>
 
       {isLoading ? (
-        <div className={profileGrid}>
-          {[1, 2].map((item) => (
-            <div key={item} className={profilePanel}>
-              <Skeleton active paragraph={{ rows: 3 }} />
-            </div>
-          ))}
-        </div>
+        <SkeletonLoader
+          count={2}
+          className={profilePanel}
+          wrapperClassName={profileGrid}
+        />
       ) : blogs.length === 0 ? (
         <ProfileEmpty
           title="No blogs yet"

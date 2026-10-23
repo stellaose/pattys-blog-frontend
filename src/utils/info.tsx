@@ -5,9 +5,6 @@ export type LegalSection = {
   points?: string[];
 };
 
-// ! PLACEHOLDER (replace with the address that should receive messages)
-export const contactEmail = "hello@pattys.example";
-
 export const legalLastUpdated = "13 October 2026";
 
 // ? TERMS AND CONDITIONS

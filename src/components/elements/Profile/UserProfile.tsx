@@ -1,5 +1,5 @@
 import React from "react";
-import { Skeleton } from "antd";
+import { SkeletonLoader } from "#components/general";
 import { feedGrid, feedPanel, feedPanelTitle } from "#/styles/feed";
 import { eyebrow } from "#/styles/home";
 import {
@@ -29,11 +29,7 @@ export const UserProfile: React.FC<Props> = ({
   isLoading,
 }) => {
   if (isLoading) {
-    return (
-      <div className={profilePanel}>
-        <Skeleton active avatar paragraph={{ rows: 4 }} />
-      </div>
-    );
+    return <SkeletonLoader avatar rows={4} className={profilePanel} />;
   }
 
   if (!user) {

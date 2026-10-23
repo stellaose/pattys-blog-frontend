@@ -1,6 +1,6 @@
 import React from "react";
+import { SkeletonLoader } from "#components/general";
 import Link from "next/link";
-import { Skeleton } from "antd";
 import { GoComment, GoTrash } from "react-icons/go";
 import {
   profileDelete,
@@ -83,7 +83,7 @@ export const ProfileComments: React.FC<Props> = ({
         <div className={profilePanel}>
           <p className={feedPanelTitle}>on your blogs ({received.length})</p>
           {isLoading ? (
-            <Skeleton active paragraph={{ rows: 3 }} />
+            <SkeletonLoader />
           ) : (
             <CommentList
               comments={received}
@@ -95,7 +95,7 @@ export const ProfileComments: React.FC<Props> = ({
         <div className={profilePanel}>
           <p className={feedPanelTitle}>written by you ({written.length})</p>
           {isLoading ? (
-            <Skeleton active paragraph={{ rows: 3 }} />
+            <SkeletonLoader />
           ) : (
             <CommentList
               comments={written}
