@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Pagination, Skeleton } from "antd";
+import { Pagination, SkeletonLoader } from "#components/general";
 import { useAppSelector } from "#store/hook";
 import { useGetBlogs } from "#/hooks";
 import { feedCard, feedStack } from "#/styles/feed";
@@ -48,13 +48,12 @@ export const Feed = () => {
       />
 
       {isLoading ? (
-        <div className={feedStack}>
-          {[1, 2, 3].map((item) => (
-            <div key={item} className={feedCard}>
-              <Skeleton active avatar paragraph={{ rows: 3 }} />
-            </div>
-          ))}
-        </div>
+        <SkeletonLoader
+          count={3}
+          avatar
+          className={feedCard}
+          wrapperClassName={feedStack}
+        />
       ) : blogs.length === 0 ? (
         <FeedEmpty isFiltered={isFiltered} />
       ) : (
@@ -67,17 +66,12 @@ export const Feed = () => {
         </p>
       )}
 
-      {(pagination?.totalPages ?? 1) > 1 && (
-        <div className="flex justify-center mt-8">
-          <Pagination
-            current={page}
-            pageSize={feedPageSize}
-            total={pagination?.totalBlogs}
-            showSizeChanger={false}
-            onChange={setPage}
-          />
-        </div>
-      )}
+      <Pagination
+        current={page}
+        total={pagination?.totalBlogs ?? 0}
+        pageSize={feedPageSize}
+        onChange={setPage}
+      />
     </div>
   );
 };

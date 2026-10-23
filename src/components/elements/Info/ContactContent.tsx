@@ -23,7 +23,8 @@ import {
   contactValue,
   infoPanel,
 } from "#/styles/info";
-import { contactEmail, contactTopics } from "#/utils/info";
+import { contactTopics } from "#/utils/info";
+import { ContactMessage } from "#/hooks";
 import {
   contactMessageRule,
   contactTopicRule,
@@ -51,36 +52,34 @@ const socials = [
   },
 ];
 
-export const ContactContent: React.FC<{ user: any }> = ({ user }) => {
+type Props = {
+  user: any;
+  loading: boolean;
+  onSubmit: (contact: ContactMessage) => Promise<boolean | undefined>;
+};
+
+export const ContactContent: React.FC<Props> = ({
+  user,
+  loading,
+  onSubmit,
+}) => {
   const [form] = Form.useForm();
   const values = Form.useWatch([], form);
 
   const isFormValid =
     !values?.name || !values?.email || !values?.topic || !values?.message;
 
-  const onFinish = (message: any) => {
-    const body = `${message?.message}\n\n${message?.name}\n${message?.email}`;
-
-    window.location.href = `mailto:${contactEmail}?subject=${encodeURIComponent(message?.topic)}&body=${encodeURIComponent(body)}`;
+  const onFinish = async (contact: ContactMessage) => {
+    const isSent = await onSubmit(contact);
+    if (isSent) {
+      form.resetFields();
+    }
   };
 
   return (
     <div className={contactGrid}>
       <div className={`${infoPanel} self-start`}>
         <p className={feedPanelTitle}>get in touch</p>
-        <div className={contactRow}>
-          <span className={contactIcon}>
-            <MdOutlineMailOutline size={20} />
-          </span>
-          <div>
-            <p className={contactLabel}>E-mail</p>
-            <a href={`mailto:${contactEmail}`}>
-              <span className={`${contactValue} hover:underline`}>
-                {contactEmail}
-              </span>
-            </a>
-          </div>
-        </div>
         <div className={contactRow}>
           <span className={contactIcon}>
             <GoClock size={20} />
@@ -124,7 +123,7 @@ export const ContactContent: React.FC<{ user: any }> = ({ user }) => {
       <div className={infoPanel}>
         <p className={feedPanelTitle}>send a message</p>
         <p className={`${sectionText} !text-sm mb-4`}>
-          Sending opens your e-mail app with your message ready to go.
+          Your message goes straight to our team&apos;s inbox.
         </p>
         <Form
           key={user?.userId ?? "guest"}
@@ -193,6 +192,7 @@ export const ContactContent: React.FC<{ user: any }> = ({ user }) => {
               title="Send message"
               bgVariant="secondary"
               className="!w-full"
+              loading={loading}
               disabled={isFormValid}
             />
           </div>

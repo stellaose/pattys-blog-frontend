@@ -5,3 +5,4 @@ export * from "./useBlog";
 export * from "./useReview";
 export * from "./useProfile";
 export * from "./useAuthGuard";
+export * from "./useContact";

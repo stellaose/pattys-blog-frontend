@@ -1,5 +1,5 @@
 import React from "react";
-import { Skeleton } from "antd";
+import { SkeletonLoader } from "#components/general";
 import { GoBook, GoComment, GoHeart, GoThumbsdown } from "react-icons/go";
 import {
   profilePanel,
@@ -39,9 +39,7 @@ export const ProfileActivities: React.FC<Props> = ({
       </div>
 
       {isLoading ? (
-        <div className={profilePanel}>
-          <Skeleton active paragraph={{ rows: 4 }} />
-        </div>
+        <SkeletonLoader rows={4} className={profilePanel} />
       ) : activities.length === 0 ? (
         <ProfileEmpty
           title="Nothing here yet"

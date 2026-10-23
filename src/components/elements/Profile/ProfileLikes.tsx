@@ -1,5 +1,5 @@
 import React from "react";
-import { Skeleton } from "antd";
+import { SkeletonLoader } from "#components/general";
 import { GoComment, GoHeartFill, GoThumbsdown } from "react-icons/go";
 import {
   profileBlogStat,
@@ -27,13 +27,11 @@ export const ProfileLikes: React.FC<Props> = ({ blogs, isLoading }) => {
       </div>
 
       {isLoading ? (
-        <div className={profileGrid}>
-          {[1, 2].map((item) => (
-            <div key={item} className={profilePanel}>
-              <Skeleton active paragraph={{ rows: 3 }} />
-            </div>
-          ))}
-        </div>
+        <SkeletonLoader
+          count={2}
+          className={profilePanel}
+          wrapperClassName={profileGrid}
+        />
       ) : blogs.length === 0 ? (
         <ProfileEmpty
           title="No likes yet"

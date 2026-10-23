@@ -21,3 +21,13 @@ export type ChildrenProps = {
   children?: ReactNode;
   component?: any;
 };
+
+export type BlogParams = {
+  keyword?: string;
+  category?: string;
+  page?: number;
+  limit?: number;
+  sort?: string;
+};
+
+export type LikeStatus = "like" | "dislike" | "none";
